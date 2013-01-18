@@ -18,16 +18,29 @@ following files are available:
                     doctoral theses.
 + sta-colours.sty :: The university colours.
 + sta-letter.cls :: An overlay of the memoir class, with helper code
-     and some preloaded packages, designed for writing formal letters.
+                    and some preloaded packages, designed for writing
+                    formal letters.
 + sta-poster.sty :: A style, and convenience, file for the baposter
-     class. baposter, is a LaTeX class for producing posters.
+                    class. baposter, is a LaTeX class for producing
+                    posters.
 
 The classes have been designed to adhere closely as possible to the
 University of St Andrews' corporate guidelines, and be used with a
-vanila LaTeX install. Any mistakes email.
+vanila LaTeX install.
+
++ Note :: This project is under perpetual development, and so mistakes
+          will be made. Any problems please submit an issue with
+          a *MINIMAL FAILING EXAMPLE* to the issue tracker.
+
+Pull request will be welcomed, though I do not guarantee that they
+will be accepted. Any ideas for features/improvements to the existing
+packages, or ideas for new classes/packages please use githubs issue
+tracker.
+
+Also, a beamer package is under development and not ready for release.
 
 The *examples* folder contains some example classes, and shows how I
-used the files. 
+used the files.
 
 * Installation
 
