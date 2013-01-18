@@ -1,0 +1,141 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Copyright 2012 - Jan de Muijnck-Hughes
+%%
+%% This work may be distributed and/or modified under the  conditions
+%% of the LaTeX Project Public License, either version 1.3c of this
+%% license or (at your option) any later version.
+%%
+%% The latest version of this license can be found at:
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%%
+%% This work has the LPPL maintenance status `maintained'.
+%%
+%% The Current Maintainer of this work is Jan de Muijnck-Hughes
+%%
+%% This work consists of the file: sta-poster.cls
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{sta-poster}[2012/10/11 v2012.10.11 sta-poster]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LaTeX class for styling baposters. This style builds upon existing
+%% LaTeX packages combining them into a consistent class that is
+%% (hopefully) easy to use, making the writing of a poster easier.
+%%
+%% TODO
+%%  Add themes
+%%  Add better way to send options back to baposter.
+%% --------------------------------------------------------- [ Declare Options ]
+\RequirePackage{kvoptions}
+\RequirePackage{kvoptions-patch}
+\SetupKeyvalOptions{%
+  family=sta,
+  prefix=STACS@,
+}
+
+\DeclareStringOption[4]{columns}
+
+\ProcessKeyvalOptions*
+%% ----------------------------------------------------------------- [ Imports ]
+\RequirePackage[l2tabu,orthodox]{nag}
+\RequirePackage{fixltx2e}
+\RequirePackage[british]{babel}
+\RequirePackage[strict=true]{csquotes}
+\RequirePackage{environ}
+%% Fonts
+\RequirePackage[T1]{fontenc}
+\RequirePackage[protrusion=true, expansion=true]{microtype}
+\RequirePackage{tgbonum}
+\RequirePackage[scaled]{helvet}
+\RequirePackage{tgcursor}
+\RequirePackage{xspace}
+% Other Packages
+\RequirePackage{xcolor}
+\RequirePackage[font=sf]{caption}
+\RequirePackage{setspace}
+\RequirePackage{enumitem}
+\RequirePackage{footmisc}
+\RequirePackage[backend=biber,
+                doi=false,
+                url=false,
+                isbn=false,
+                maxnames=1,
+                minnames=1,
+                natbib=true]{biblatex}
+\RequirePackage{relsize}
+\RequirePackage{graphicx}
+\RequirePackage{multicol}
+
+%% ---------------------------------------------------------------- [ Commands ]
+\newcommand{\institute}[1]{\gdef\@institute{#1}}
+\newcommand{\email}[1]{\texttt{#1}}
+\newcommand{\logocommand}[1]{\gdef\@logocommand{#1}}
+%% ----------------------------------------------------------------- [ Styling ]
+
+%% Colours
+\definecolor{sta-blue}{RGB}{0,0,68}
+\definecolor{sta-lblue}{cmyk}{1.0,0.0,0.0,0.0}
+%% Biblatex
+\defbibheading{poster}{\vskip 0.1em}
+\renewcommand{\bibfont}{\footnotesize\sffamily}
+
+%% Footnote
+\renewcommand{\footnotelayout}{\scriptsize\sffamily\raggedright}
+
+%% Line Spacing
+\setstretch{1.2} % Line spacing
+
+%% Enum Item
+\setitemize{noitemsep,nolistsep}
+\setenumerate{noitemsep,nolistsep}
+\setdescription{font=\bfseries\sffamily\large\protect\color{sta-blue},
+   leftmargin=3em}
+
+%% Coloured Highlighting
+\newcommand{\zoom}[1]{\textcolor{sta-blue}{\textbf{#1}}}
+\newcommand{\highlight}[1]{\textcolor{sta-blue}{\textbf{#1}}}
+
+%% -------------------------------------------------- [ New Poster Environment ]
+\NewEnviron{sta-poster}[1]{%
+\begin{poster}{
+%% ----------------------------------------------------------------- [ Options ]
+ grid=false,
+ colspacing=1.2em,  % Column spacing
+ linewidth=2pt,
+ eyecatcher=false,
+ columns=\STACS@columns,
+%% -------------------------------------------------------------- [ Background ]
+% bgColorOne=white,  % primary
+% bgColorTwo=white,  % secondary
+ background=none,   % use
+ borderColor=sta-blue,
+%% ------------------------------------------------------------- [ Box Headers ]
+ headerColorOne=sta-blue!80, % primary
+ headerColorTwo=sta-lblue!20, % secondary
+ headershade=shadelr,        % use
+ headerFontColor=white,
+ headerborder=open,
+ headerheight=0.12\textheight,
+ headershape=roundedright,
+ headerfont=\Large\sffamily\bfseries,
+%% -------------------------------------------------------------- [ Box Format ]
+ textfont=\sffamily,
+ textborder=roundedleft,
+% boxColorOne=white,      % l
+% boxColorTwo=white ,     % r
+ boxshade=none          % Shade direction
+}
+%% ------------------------------------------------------------- [ Eye Catcher ]
+{}
+%% ------------------------------------------------------------------- [ Title ]
+{\sffamily\Huge\@title\vspace{0.2em}}
+%% ----------------------------------------------------------------- [ Authors ]
+{\sffamily\@author\\[0.3em]\@institute}
+%% -------------------------------------------------------------------- [ Logo ]
+{\@logocommand}
+\BODY
+\end{poster}}
+
+
+\endinput

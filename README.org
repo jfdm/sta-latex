@@ -1,0 +1,40 @@
+#+TITLE: sta-latex: A Guide To.
+#                               ____  _      _         _         _____   __  __
+#                              / ___|| |_   / \       | |    __ |_   _|__\ \/ /
+#                              \___ \| __| / _ \ _____| |   / _` || |/ _ \\  / 
+#                               ___) | |_ / ___ \_____| |__| (_| || |  __//  \ 
+#                              |____/ \__/_/   \_\    |_____\__,_||_|\___/_/\_\
+#
+
+* Overview
+
+A LaTeX project for use within the University of St Andrews, and
+especially within the School of Computer Science. The files here are
+provided under the LaTeX Project Public License v1.3c. Currently the
+following files are available:
+
++ sta-thesis.cls :: An overlay of the memoir class, with helper code
+                    and preloaded packages, designed for writing
+                    doctoral theses.
++ sta-colours.sty :: The university colours.
++ sta-letter.cls :: An overlay of the memoir class, with helper code
+     and some preloaded packages, designed for writing formal letters.
++ sta-poster.sty :: A style, and convenience, file for the baposter
+     class. baposter, is a LaTeX class for producing posters.
+
+The classes have been designed to adhere closely as possible to the
+University of St Andrews' corporate guidelines, and be used with a
+vanila LaTeX install. Any mistakes email.
+
+The *examples* folder contains some example classes, and shows how I
+used the files. 
+
+* Installation
+
+1. Add a folder =sta-latex= under =texmf/tex/latex/= within your
+local =texmf= tree.
+ * *Linux* :  it is ~
+ * *Mac OS X* : it is in ~/Library
+ * *Windows* : no idea/do not care
+2. Copy the cls files into the directory.
+3. Run =texhash= n.b. you may have to do this under root. 

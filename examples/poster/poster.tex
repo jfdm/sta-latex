@@ -1,0 +1,34 @@
+\documentclass[pdftex, a1paper, landscape, final, fontscale=0.38]{baposter}
+%% ----------------------------------------------------------------- [ Imports ]
+\usepackage{sta-poster}
+\usepackage{tikz}
+%% ---------------------------------------------------------------- [ Metadata ]
+\title{The Ninja Poster}
+\author{A.\ Ninja
+\textsmaller{\email{ninja@st-andrews.ac.uk}}}
+\institute{School of Ninja's, University of Ninja's, UK}
+
+\addbibresource{biblio.bib}
+
+\logocommand{}
+
+
+\begin{document}
+\begin{sta-poster}
+
+\begin{posterbox}[name=motiv, span=4]{Motivation}
+\end{posterbox}
+
+\begin{posterbox}[name=biblio, below=motiv, above=bottom]{References}
+
+\nocite{*}
+\begin{singlespace}
+
+\printbibliography[heading=poster]
+
+\end{singlespace}
+
+\end{posterbox}
+
+\end{sta-poster}
+\end{document}

@@ -1,0 +1,148 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[final]{sta-thesis}
+
+\usepackage[style=alphabetic,natbib=true]{biblatex}
+
+\ExecuteBibliographyOptions{maxnames=3,minnames=2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Metadata \input{./metadata.tex}
+\title{Ninja Thesis}
+\author{Hamato Yoshi}
+\email{hamato@yoshi.com}
+
+
+\date{Compilation Date}
+
+\address{%
+First Line\\
+Second Line\\
+Third Line\\
+\url{http://www.somewhere.com}
+}
+
+\university{University Name}
+\logocmd{\includegraphics[scale=1.2]{./sta-logo.pdf}}
+
+\degree{Doctor of Philosophy}
+
+\keywordlist{keyword; keyword; keyword}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Preamble
+\bibliography{biblio.bib}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Front Matter
+\frontmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\begin{abstract}
+
+\end{abstract}
+\newpage
+\begin{declaration}
+I declare that the material submitted for assessment is my own work,
+except where credit is explicitly given to others by citation or
+acknowledgement.
+\end{declaration}
+
+\begin{copyrightnotice}
+In submitting this project to the \emph{\theuniversity}, I give
+permission for it to be made available for use in accordance with the
+regulations of the \emph{\theuniversity}. I also give permission for
+the title and abstract to be published and for copies of the report to
+be made and supplied to any bona fide library or research worker, and
+to be made available on the World Wide Web. 
+\end{copyrightnotice}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dedication
+\begin{dedication}
+Some dedication
+\end{dedication}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Tables Of Content
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Main Matter
+\mainmatter
+
+\chapter{Introduction}
+\nocite{*}
+\citeauthor{Shannon1946} wrote a cool paper \citep{Shannon1946}. The security of public key protocols has been studied before \citep{Dolev1983}. \citeauthor{Shamir1979} introduces in \citet{Shamir1979} how to share secrets.
+There are many interesting papers outthere \cite{Needham1978,Rivest1978,Merkle1978,Diffie1976,Shannon1949,Ziv1977, Huffman1952, Hamming1950}
+
+\begin{definition}[A definition]
+definition is a definition
+\end{definition}
+
+\begin{note}
+a note
+\end{note}
+
+\begin{remark}
+A remark
+\end{remark}
+
+\chapter{Method}
+\begin{example}
+An example
+\end{example}
+
+\begin{exercise}
+An exercise
+\end{exercise}
+
+
+\chapter{Results}
+
+\begin{exercise}
+An exercise
+\end{exercise}
+
+\begin{problem}
+An problem
+\end{problem}
+
+
+\chapter{Discussion}
+
+\begin{solution}
+An solution
+\end{solution}
+
+\begin{corollary}
+An corollary
+\end{corollary}
+
+\begin{lemma}
+An lemma
+\end{lemma}
+
+\chapter{Conclusion}
+
+\begin{proposition}
+An porp
+\end{proposition}
+
+\begin{theorem}
+An theorem
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Back Matter
+\backmatter 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Display Bibliographies
+\printbibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Display Theorem, Acronym and Glossary lists
+\listoftheorems[ignore={note,remark}]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
