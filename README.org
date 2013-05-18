@@ -48,8 +48,8 @@ used the files.
 
 1. Add a folder =sta-latex= under =texmf/tex/latex/= within your
 local =texmf= tree.
- * *Linux* :  it is =~=
- * *Mac OS X* : it is in =~/Library=
- * *Windows* : no idea/do not care
+ + *Linux* :  it is =~=
+ + *Mac OS X* : it is in =~/Library=
+ + *Windows* : no idea/do not care
 2. Copy the files into the directory.
 3. Run =texhash= n.b. you may have to do this under root. 
