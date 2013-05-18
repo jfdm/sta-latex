@@ -23,6 +23,8 @@ following files are available:
 + sta-poster.sty :: A style, and convenience, file for the baposter
                     class. baposter, is a LaTeX class for producing
                     posters.
++ drafting.tex :: A drafting configuration, yet to be incorporated
+                  within the thesis class..
 
 The classes have been designed to adhere closely as possible to the
 University of St Andrews' corporate guidelines, and be used with a
@@ -46,8 +48,8 @@ used the files.
 
 1. Add a folder =sta-latex= under =texmf/tex/latex/= within your
 local =texmf= tree.
- * *Linux* :  it is ~
- * *Mac OS X* : it is in ~/Library
+ * *Linux* :  it is =~=
+ * *Mac OS X* : it is in =~/Library=
  * *Windows* : no idea/do not care
-2. Copy the cls files into the directory.
+2. Copy the files into the directory.
 3. Run =texhash= n.b. you may have to do this under root. 
