@@ -1,20 +1,20 @@
+\ProvidesPackage{sta-drafting}
 % ------------------------------------------------------------- [ For Drafting ]
-\makeatletter
 %% --------------------------------------------------------- [ Globabl Imports ]
-\usepackage[obeyDraft,
-            colorinlistoftodos,
-            textsize=small,
-            color=orange!20!white,
-            linecolor=black]{todonotes}
-\usepackage{ifdraft}
+\RequirePackage[obeyDraft,
+                colorinlistoftodos,
+                textsize=small,
+                color=orange!20!white,
+                linecolor=black]{todonotes}
+\RequirePackage{ifdraft}
 %% ---------------------------------------------------------- [ Setup Drafting ]
 \ifdraft{%
 %% ----------------------------------------------------------- [ Local Imports ]
-\usepackage{geometry}
-\usepackage{fancyhdr}
-\usepackage{lineno}
-\usepackage{setspace}
-\usepackage{environ}
+\RequirePackage{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{lineno}
+\RequirePackage{setspace}
+\RequirePackage{environ}
 %% ---------------------------------------------------------------- [ Headings ]
 \fancypagestyle{titlepage}{%
  \fancyhf{}
@@ -50,12 +50,22 @@
 }{}
 %% --------------------------------------------------------- [ Global Commands ]
 \newcommand{\addref}{\todo{Add Reference}}
-\newcommand{\anote}[2][]{\todo[caption={#2}, #1]{\small #2}}
+
+% nasty hack to get spacing to work
+\newcommand{\fixtodo}[2][]{%
+\todo[caption={#2}, size=\small, #1]{%
+\begin{spacing}{.75}#2\end{spacing}}}
+
 \NewEnviron{fncycomment}[1][Comment]{%
-\anote[inline, caption={#1}]{%
-\begin{minipage}{\linewidth}
-\textbf{#1}
+\fixtodo[inline, caption={#1}]{%
+\begin{minipage}{\linewidth}%
+\textbf{\uppercase{#1}}
 \BODY{}
 \end{minipage}}}
-\makeatother
+
+\newcommand{\anote}[2][]{%
+\fixtodo{\textbf{\uppercase{#1}}~#2
+}}
+%% --------------------------------------------------------------------- [ EOS ]
+\endinput
 %% --------------------------------------------------------------------- [ EOF ]
