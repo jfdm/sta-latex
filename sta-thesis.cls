@@ -51,9 +51,6 @@
 % -------------------------------------------------------- [ Options ]
 
 \newif\ifprinting
-\newif\ifcoverpage
-
-\DeclareOption{coverpage}{\coverpagetrue}
 
 \DeclareOption{draft}{%
   \PassOptionsToClass{draft}{memoir}
@@ -76,9 +73,10 @@
 \RequirePackage[british]{babel}
 \RequirePackage[strict=true]{csquotes}
 \RequirePackage{microtype}
+\RequirePackage{environ}
 \RequirePackage{xspace}
 \RequirePackage{tocbibind}
-\RequirePackage{color}
+\RequirePackage{xcolor}
 \RequirePackage[british,iso]{isodate}
 
 \RequirePackage[sc]{mathpazo}
@@ -106,16 +104,15 @@
 \RequirePackage{memhfixc}
 
 %% For Draft Mode
-\RequirePackage{setspace}
 \RequirePackage[obeyDraft,
                 colorinlistoftodos,
-                textsize=small]{todonotes}
+                textsize=small,
+                color=orange!20!white,
+                linecolor=black]{todonotes}
 \RequirePackage{ifdraft}
-\RequirePackage{lineno}
-\RequirePackage{environ}
 
+%% ------------------------------------------------------- [ Metadata Commands ]
 
-% ---------------------------------------------- [ Metadata Commands ]
 \newcommand{\university}[1]{\gdef\@university{#1}}
 \newcommand{\theuniversity}[1]{\@university}
 \newcommand{\degree}[1]{\gdef\@degree{#1}}
@@ -136,23 +133,47 @@
 \ifprinting\texttt{#1}\else\href{mailto:#1}{#1}\fi}}
 \newcommand{\keywordlist}[1]{\gdef\@keywordlist{#1}}
 
-% -------------------------------------------- [ Page Layout Styling ]
-\settrimmedsize{297mm}{210mm}{*}
-\setlength{\trimtop}{0pt}
-\setlength{\trimedge}{\stockwidth}
-\addtolength{\trimedge}{-\paperwidth}
-\settypeblocksize{634pt}{448.13pt}{*}
+% ------------------------------------------------------ [ Page Layout Styling ]
+\ifdraft{
+%% ---------------------------------------------------------- [ Line Numbering ]
+  \RequirePackage[pagewise]{lineno}
+  \RequirePackage{geometry}
+  \renewcommand{\linenumberfont}{\normalfont\scriptsize\bfseries}
+  \setlength{\linenumbersep}{2mm}
+  \linenumbers{}
+  \modulolinenumbers[2]
+  \DoubleSpacing{}
+%% ------------------------------------------------------------- [ Page Layout ]
+  \geometry{%
+    asymmetric,
+    includeall,
+    vmargin=10mm,
+    left=10mm,
+    rmargin=5mm,
+    marginparsep=5mm,
+    marginparwidth=55mm
+  }
+%% ------------------------------------------------------- [ Paragraph Styling ]
+  \setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
+  \setlength{\parindent}{0pt}
+}{%
+  \settrimmedsize{297mm}{210mm}{*}
+  \setlength{\trimtop}{0pt}
+  \setlength{\trimedge}{\stockwidth}
+  \addtolength{\trimedge}{-\paperwidth}
+  \settypeblocksize{634pt}{448.13pt}{*}
+  
+  \setmarginnotes{17pt}{51pt}{\onelineskip}
+  \setheadfoot{\onelineskip}{2\onelineskip}
+  \setheaderspaces{*}{2\onelineskip}{*}
 
-\setmarginnotes{17pt}{51pt}{\onelineskip}
-\setheadfoot{\onelineskip}{2\onelineskip}
-\setheaderspaces{*}{2\onelineskip}{*}
+  \setlrmarginsandblock{3cm}{2.5cm}{*}
+  \setulmarginsandblock{4cm}{*}{*}
+  \checkandfixthelayout
+  \fixpdflayout
+}
 
-\setlrmarginsandblock{3cm}{2.5cm}{*}
-\setulmarginsandblock{4cm}{*}{*}
-\checkandfixthelayout
-\fixpdflayout
-
-% ------------------------------------------ [ Default Look and Feel ]
+%% ------------------------------------------------ [ Default Look and Feel ]
 \setsecnumdepth{subsection}
 
 \settocdepth{section}
@@ -177,22 +198,41 @@
  }
 \fi
 
-%% Epigraph formatting
+%% ----------------------------------------------------- [ Epigraph formatting ]
 \epigraphposition{flushright}
 \epigraphtextposition{flushleftright}
 \epigraphsourceposition{flushright}
 
-%% Chapter and Heading Styles
+%% ---------------------------------------------- [ Chapter and Heading Styles ]
+% Draft
+\makepagestyle{draft}
+
+\makeoddhead{draft}{}{}{Draft compiled on \today}
+\makeevenhead{draft}{}{}{Draft compiled on \today}
+
+\makeoddfoot{draft}{}{}{Page--\thepage}
+\makeevenfoot{draft}{}{}{Page--\thepage}
+
+% Frontpage
+\makepagestyle{frontpage}
+
+\makeoddhead{frontpage}{}{}{}
+\makeevenhead{frontpage}{}{}{}
+
+\makeoddfoot{frontpage}{}{}{}
+\makeevenfoot{frontpage}{}{}{}
+
+% Apply Styling
+\ifdraft{%
+ \pagestyle{draft}
+}{%
+ \pagestyle{Ruled}
+}
+
 \headstyles{komalike}
 \chapterstyle{madsen}
-\pagestyle{Ruled}
-\makepagestyle{frontpage}
-\makeoddhead{frontpage}{}
-\makeevenhead{frontpage}{}
-\makeoddfoot{frontpage}{}
-\makeevenfoot{frontpage}{}
 
-% ------------------------------------------------------- [ Theorems ]
+%% ----------------------------------------------------------- [ Theorems ]
 \declaretheoremstyle[%
   spaceabove=6pt, spacebelow=6pt,
   headfont=\normalfont\bfseries,
@@ -217,20 +257,24 @@
 % --------------------------------------------- [ Glossary Stylings ]
 %% TODO
 % ---------------------------------------------- [ TODO Note Macros ]
-\newcommand{\insertCite}{\todo{Need citation}}
 
-\newcommand{\anote}[2][]
- {\todo[caption={#2}, backgroundcolor=orange!20!white,
-     linecolor=orange, #1]{\small #2}}
+\newcommand{\addref}{\todo{Add Reference}}
 
-\newcommand{\commentinline}[1]{\anote[inline]{#1}}
+% nasty hack to get spacing to work
+\newcommand{\fixtodo}[2][]{%
+\todo[caption={#2}, size=\small, #1]{%
+\begin{Spacing}{.75}#2\end{Spacing}}}
 
-\NewEnviron{inlinecomment}[1][Inline Comment]{%
-\anote[inline, caption={#1}]{%
-\begin{minipage}{\linewidth}
-\textbf{#1}
-\BODY
+\NewEnviron{fncycomment}[1][Comment]{%
+\fixtodo[inline, caption={#1}]{%
+\begin{minipage}{\linewidth}%
+\textbf{\uppercase{#1}}
+\BODY{}
 \end{minipage}}}
+
+\newcommand{\anote}[2][]{%
+\fixtodo{\textbf{\uppercase{#1}}~#2
+}}
 
 % ----------------------------------------------- [ Predefined Pages ]
 %% Dedication Page
@@ -260,30 +304,14 @@
  \vspace*{0.2\textheight}%
 }{\cleardoublepage}
 
-% ------------------------------------------ [ Title and Cover Pages ]
+%% -------------------------------------------------------------- [ Title Page ]
 \renewcommand{\maketitle}{%
  \hypersetup{%
   pdfauthor={\@author},
   pdftitle={\@title},
   pdfkeywords={\@keywordlist}
  }
-%% Cover Page
-\ifcoverpage
-{
- \thispagestyle{empty}
- \raggedleft
-  \vspace*{0.2\textheight}
- {\HUGE\bfseries \@title}
- \rule{0.9\linewidth}{0.5em}\\[2em]
- {\LARGE \@author}\\[0.2em]
- {\LARGE \@date}
- \vfill
- \cleardoublepage
-}
-\else\fi
-%% Title Page
-{
- \thispagestyle{empty}
+{\thispagestyle{empty}
  \centering
  \vspace*{0.025\textheight}
  \rule{\linewidth}{0.1em}\\[2em]
@@ -308,9 +336,9 @@
  {\large\@address}\\[0.1em]
  {\large\@date}
  \vfill
-}
 \cleardoublepage
-\pagestyle{Ruled}
+%\pagestyle{Ruled}
+}
 }
 \endinput
 % ------------------------------------------------------------ [ EOF ]

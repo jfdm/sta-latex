@@ -1,16 +1,18 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[final]{sta-thesis}
+%% --------------------------------------------------------------- [ My Thesis ]
+\documentclass[
+draft
+%final
+]{sta-thesis}
 
 \usepackage[style=alphabetic,natbib=true]{biblatex}
+\usepackage{lipsum}
 
 \ExecuteBibliographyOptions{maxnames=3,minnames=2}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Metadata \input{./metadata.tex}
+%% ---------------------------------------------------------------- [ Metadata ]
 \title{Ninja Thesis}
 \author{Hamato Yoshi}
 \email{hamato@yoshi.com}
-
 
 \date{Compilation Date}
 
@@ -27,16 +29,14 @@ Third Line\\
 \degree{Doctor of Philosophy}
 
 \keywordlist{keyword; keyword; keyword}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Preamble
+
 \bibliography{biblio.bib}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ------------------------------------------------------------------- [ Begin ]
 \begin{document}
 \maketitle 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Front Matter
+%% ------------------------------------------------------------- [ Frontmatter ]
 \frontmatter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
 \thispagestyle{empty}
 \begin{abstract}
 
@@ -57,18 +57,15 @@ be made and supplied to any bona fide library or research worker, and
 to be made available on the World Wide Web. 
 \end{copyrightnotice}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Dedication
+%% -------------------------------------------------------------- [ Dedication ]
 \begin{dedication}
 Some dedication
 \end{dedication}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Tables Of Content
+%% --------------------------------------------------------------------- [ TOC ]
 \tableofcontents
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Main Matter
+%% -------------------------------------------------------------- [ Mainmatter ]
 \mainmatter
 
 \chapter{Introduction}
@@ -76,19 +73,78 @@ Some dedication
 \citeauthor{Shannon1946} wrote a cool paper \citep{Shannon1946}. The security of public key protocols has been studied before \citep{Dolev1983}. \citeauthor{Shamir1979} introduces in \citet{Shamir1979} how to share secrets.
 There are many interesting papers outthere \cite{Needham1978,Rivest1978,Merkle1978,Diffie1976,Shannon1949,Ziv1977, Huffman1952, Hamming1950}
 
-\begin{definition}[A definition]
-definition is a definition
+\begin{fncycomment}
+This should only be seen in draft mode.
+\end{fncycomment}
+
+\begin{quote}
+We few, we happy few, we band of brothers\anote[Bob]{Look Ma' a todo note};
+For he to-day that sheds his blood with me
+Shall be my brother; be he ne'er so vile,
+This day shall gentle his condition:
+And gentlemen in England now a-bed
+Shall think themselves accursed they were not here,
+And hold their manhoods cheap whiles any speaks
+That fought with us upon Saint Crispin's day.
+\end{quote}
+
+\lipsum
+\chapter{Method}
+
+\lipsum
+
+\begin{theorem}\label{th:a}
+Let $a$ and $b$ be in $\mathbb{N}$. Then there exist integers $u$ and $v$, such that
+\[
+gcd(a,b) = ua+vb.
+\]
+In particular, if $a$ and $b$ are coprime, there exist integers $u$ and $v$, such tat
+\[
+ua+vb=1.
+\]
+\end{theorem}
+
+\begin{lemma}\label{lem:a}
+Let $d$ divide a product $ab$ and let the gcd of $d$ and $a$ be 1. Then $d$ divides $b$.
+\end{lemma}
+
+\begin{proof}
+Since $\mathrm{gcd}(d,a)=1$, Theorem~\ref{th:a} implies that $xd + ya = 1$, for some integers $x$ and $y$.
+So, $xdb + yab = b$. Since $d$ divides $ab$, it follows that $d$ also divides $xdb + yab$ which equals $b$.
+\end{proof}
+
+\begin{corollary}
+let $p$ be prime and let $p$ divide $\prod_{i=1}^{k}a_{i}$, where $a_{i}\in\mathbb{Z}, 1\geq i\geq k$. Then $p$ divides at least one of the factors $a_{i}, 1\geq i\geq k$.
+\end{corollary}
+
+\begin{proof}
+Use Lemma~\ref{lem:a} and induction on $k$.
+\end{proof}
+
+\noindent
+A random labelled equation.
+\begin{equation}\label{eq:a}
+a_{i}\equiv a_{j} \pmod{m}\Rightarrow i=j
+\end{equation}
+
+\begin{theorem}[Fermat's Little Theorem]
+Let $p$ be a prime number and let $a$ be any integer. Then
+\[
+a^{p}\equiv a\pmod{p}
+\]
+\end{theorem}
+
+\begin{definition}
+A function $f:\mathbb{N}\rightarrow\mathbb{N}$ is said to be \emph{multiplicative}, if for every pair of positive integers $m$ and $n$
+\[
+\mathrm{gcd}(m,n)=1\Rightarrow f(m,n)=f(m)f(n)
+\]
 \end{definition}
 
-\begin{note}
-a note
-\end{note}
+\begin{lemma}
+Euler's Totient function $\phi(m)$ is multiplicative.
+\end{lemma}
 
-\begin{remark}
-A remark
-\end{remark}
-
-\chapter{Method}
 \begin{example}
 An example
 \end{example}
@@ -97,52 +153,59 @@ An example
 An exercise
 \end{exercise}
 
+\begin{problem}
+A problem
+\end{problem}
+
+\begin{solution}
+A solution
+\end{solution}
+
+\begin{proposition}
+A proposition
+\end{proposition}
+
+
+\begin{definition}
+A definition
+\end{definition}
+
+\begin{note}
+\lipsum[1]
+\end{note}
+
+\begin{remark}
+\lipsum[1]
+\end{remark}
 
 \chapter{Results}
 
-\begin{exercise}
-An exercise
-\end{exercise}
-
-\begin{problem}
-An problem
-\end{problem}
-
-
+\lipsum
 \chapter{Discussion}
 
-\begin{solution}
-An solution
-\end{solution}
+\begin{quote}
+We few, we happy few, we band of brothers\anote[Bob]{Look Ma' a todo note};
+For he to-day that sheds his blood with me
+Shall be my brother; be he ne'er so vile,
+This day shall gentle his condition:
+And gentlemen in England now a-bed
+Shall think themselves accursed they were not here,
+And hold their manhoods cheap whiles any speaks
+That fought with us upon Saint Crispin's day.
+\end{quote}
 
-\begin{corollary}
-An corollary
-\end{corollary}
-
-\begin{lemma}
-An lemma
-\end{lemma}
+\lipsum[2-4]
 
 \chapter{Conclusion}
 
-\begin{proposition}
-An porp
-\end{proposition}
+\lipsum
 
-\begin{theorem}
-An theorem
-\end{theorem}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Back Matter
+%% ------------------------------------------------------------- [ Back Matter ]
 \backmatter 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Display Bibliographies
+%% ------------------------------------------------------------ [ Bibliography ]
 \printbibliography
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Display Theorem, Acronym and Glossary lists
+%% ----------------------------------------------------------- [ List o' Stuff ]
 \listoftheorems[ignore={note,remark}]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \end{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% --------------------------------------------------------------------- [ EOF ]
