@@ -1,3 +1,7 @@
+auto/
+*~
+*.fls
+*.bak
 *.acn
 *.acr
 *.alg
