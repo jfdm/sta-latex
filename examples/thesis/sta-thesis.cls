@@ -181,6 +181,7 @@
 
 %% Printing Dependent styling
 \ifprinting
+ \selectcolormodel{cmyk}
  \hypersetup{
   linkcolor=black,
   anchorcolor=black,
@@ -189,6 +190,7 @@
  }
 
 \else
+ \selectcolormodel{RGB}
  \hypersetup{%
   colorlinks=true,
   linkcolor=sta-blue,
