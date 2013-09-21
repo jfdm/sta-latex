@@ -10,8 +10,11 @@
 
 A LaTeX project for use within the University of St Andrews, and
 especially within the School of Computer Science. The files here are
-provided under the LaTeX Project Public License v1.3c. Currently the
-following files are available:
+provided under the LaTeX Project Public License v1.3c. Please note
+that this project is not officially affiliated with the University
+nor the department. 
+
+Currently the following files are available:
 
 + sta-thesis.cls :: An overlay of the memoir class, with helper code
                     and preloaded packages, designed for writing
@@ -34,12 +37,13 @@ vanila LaTeX install.
           will be made. Any problems please submit an issue with
           a *MINIMAL FAILING EXAMPLE* to the issue tracker.
 
-Pull request will be welcomed, though I do not guarantee that they
+Pull requests will be welcomed, though I do not guarantee that they
 will be accepted. Any ideas for features/improvements to the existing
 packages, or ideas for new classes/packages please use githubs issue
 tracker.
 
 Also, a beamer package is under development and not ready for release.
+It will be released when I an be bothered to package it up.
 
 The *examples* folder contains some example classes, and shows how I
 used the files.
