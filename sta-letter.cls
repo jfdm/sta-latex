@@ -55,6 +55,8 @@
 \newcommand{\fax}[1]{\gdef\STACS@fax{#1}}
 \newcommand{\www}[1]{\gdef\STACS@www{#1}}
 
+\newcommand{\emailTo}[1]{\href{mailto:#1}{#1}}
+
 \newcommand{\charityline}{The University of St Andrews is a charity registered in Scotland. No: SC013532AD}
 
 \newcommand{\recipient}[1]{\gdef\STACS@recipient{#1}}
