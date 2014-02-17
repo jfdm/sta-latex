@@ -1,0 +1,48 @@
+#+TITLE: Idris, Modern and Modern Mmdern Encryption
+
+
+* Provable Cryptography/Security
+** What is provable Security
+** Formal Methods and Crypto
+*** Full Automatic Methods
+**** Model Checking
+**** Theorem Proving
+*** Interactive
+**** Interactive Theorem Proving
+**** Type Checking
+
+** Symbolic Model
+** Computational Model
+*** Adapting techniques from the symbolic model
+**** logics
+**** type systems
+*** Direct Computational Proofs
+**** proofs by sequences of games
+** Implementation - Disconnect between:
+*** Mathematical Theory
+*** Proofs
+*** Implementation
+*** Usability
+* Tooling
+** Proverif
+** CryptoVerif
+*** Generates proofs by sequences of games
+*** automated and user-guided modes
+** EasyCrypt
+** Specifications from Implementations
+*** Existing
+| Implementation | Analyzer    | Model          | Verifier    |
+|----------------+-------------+----------------+-------------|
+| F\#            | FS2PV       | ProVerif Model | Proverif    |
+| F\#            | FS2CV       | CryptoVerif    | CryptoVerif |
+| Java           | Elijah      | LySa Model     | LySatool    |
+| C              | symbol ex.\ | ProVerif       | ProVerif    |
+*** New
+
+
+* Idris and Cryptography
+** Idris Provides
+** What can we do better
+** ...
+
+

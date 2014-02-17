@@ -1,0 +1,146 @@
+%% ------------------------------------------------- [ St Andrews Beamer Style ]
+%%
+%% A beamer style for the University of St Andrews.
+%%
+%% Provides:
+%%
+%%   + Options for styling
+%%     + lecture    :: based upon Warsaw
+%%     + conf       :: based upon Berlin
+%%     + 'default'  :: based upon Madrid
+%%     + customhf   :: custom header and foot
+%%     + customhead :: custom head
+%%     + customfoot :: custom foot
+%%   + Commands
+%%     + Copyrighted graphics commands  
+%%       + \includegraphicscopyright[<options>]{<file>}{<Copyright Notice>}
+%%     + Safe print reference command, assumes biblatex.
+%%       + \printReferences{}
+%%   + Modifications
+%%     + Handout mode produces 4up automatically.
+%%     + Handout mode gets section pages
+%% ----------------------------------------------------------- [ Begin Package ]
+\ProvidesPackage{stabs}
+%% ---------------------------------------------------------------- [ Packages ]
+\RequirePackage{ifthen}
+\RequirePackage{hyperref}
+\RequirePackage{graphicx}
+\RequirePackage{sta-colours}
+%% ----------------------------------------------------------------- [ Options ]
+%% Booleans
+\newboolean{lecttheme}
+\setboolean{lecttheme}{false}
+
+\newboolean{conftheme}
+\setboolean{conftheme}{false}
+
+\newboolean{customhead}
+\setboolean{customhead}{false}
+\newboolean{customfoot}
+\setboolean{customfoot}{false}
+
+%% Options
+\DeclareOption{lecture}{\setboolean{lecttheme}{true}}
+\DeclareOption{conf}{\setboolean{conftheme}{true}}
+\DeclareOption{customhead}{\setboolean{customhead}{true}}
+\DeclareOption{customfoot}{\setboolean{customfoot}{true}}
+\DeclareOption{customhf}{%
+  \setboolean{customhead}{true}%
+  \setboolean{customfoot}{true}}
+
+\ProcessOptions\relax
+%% ---------------------------------------------------------------- [ Commands ]
+%% 
+\newbox\mytempbox
+\newdimen\mytempdimen
+\newcommand\includegraphicscopyright[3][]{% 
+  \leavevmode\vbox{\vskip3pt\raggedright%
+    \setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt% 
+    \fontsize{3}{3.5}%
+    \selectfont{\color{black!70}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt}}
+
+\newcommand{\printReferences}{\mode<article>{\printbibliography}}
+
+%% ----------------------------------------------------------------- [ Styling ]
+
+\mode<handout>{
+\AtBeginSection{\frame{\sectionpage}}
+}
+%% ------------------------------------------------ [ Common Styling ]
+%% Colour Themes
+\hypersetup{bookmarks=true}
+%% -------------------------------------------------- [ Note Styling ]
+\mode<article>{
+  \hypersetup{
+    colorlinks=true,
+    linkcolor=sta-blue,
+    anchorcolor=sta-blue,
+    citecolor=sta-blue,
+    urlcolor=sta-blue
+  }
+}
+
+%% --------------------------------------------------------- [ Handout Styling ]
+\mode<handout>{
+ \RequirePackage{pgfpages}
+ \pgfpagesuselayout{4 on 1}[border shrink=5mm]
+ \usetheme{Pittsburgh}
+ \usecolortheme{dove}
+ \usefonttheme{structurebold}
+}
+
+%% ---------------------------------------------------- [ Presentation Styling ]
+\mode<beamer>{
+  \setbeamertemplate{navigation symbols}{}
+  \ifthenelse{\boolean{lecttheme}}{
+    \usetheme{Warsaw}
+  }{
+  \ifthenelse{\boolean{conftheme}}{
+    \usetheme[compress]{Berlin}
+  }{
+    \usetheme{Madrid}}}
+  \usecolortheme[named=sta-blue]{structure}
+  \setbeamertemplate{itemize items}[circle]
+  \setbeamertemplate{enumerate items}[circle]
+  \setbeamertemplate{sections/subsections in toc}[circle]
+}
+
+%% --------------------------------------------- [ Custom Presentation Styling ]
+\ifthenelse{\boolean{customhead}}{%
+%% Header => VFILL | Section
+  \mode<beamer>{%
+    \setbeamertemplate{headline}{\leavevmode%
+      \begin{beamercolorbox}
+        [wd=\paperwidth,ht=2.25ex,dp=2ex]
+        {section in head/foot}%
+        \insertsectionnavigationhorizontal{\paperwidth}{\hskip1pt plus1filll}{}%
+      \end{beamercolorbox}}}
+
+  \mode<handout>{%
+    \setbeamertemplate{headline}{\leavevmode%
+      \insertsectionnavigationhorizontal{\paperwidth}{\hskip1pt plus1filll}{}}}
+}{}
+
+\ifthenelse{\boolean{customfoot}}{%
+%% Custom Footer => Short Date | VFILL| Progress
+  \setbeamertemplate{footline}{\leavevmode\hbox{%
+      \begin{beamercolorbox}%% Short Date
+        [wd=.2\paperwidth,ht=2.25ex,dp=1ex,left]
+        {page number in head/foot}%%
+        \hspace*{2ex}%
+        \usebeamerfont{date in head/foot}%
+        \insertshortdate
+      \end{beamercolorbox}%
+      \begin{beamercolorbox} %% VFILL
+        [wd=0.7\paperwidth,ht=2.25ex,dp=1ex,center]
+        {page number in head/foot}
+      \end{beamercolorbox}%
+      \begin{beamercolorbox}%% Progress
+        [wd=0.1\paperwidth, ht=2.25ex, dp=1ex, center]
+        {page number in head/foot}%
+        \insertframenumber{}/\inserttotalframenumber
+      \end{beamercolorbox}}\vskip0pt}
+}{}
+\endinput
+%% --------------------------------------------------------------------- [ EOF ]

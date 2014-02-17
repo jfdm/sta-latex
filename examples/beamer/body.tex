@@ -1,0 +1,87 @@
+\usepackage{lipsum}
+\begin{document}
+\maketitle
+
+%%%%%%%%%
+\mode*
+%%%%%%%%%
+
+\section{Introduction}
+
+\begin{frame}{Introduction}
+  \begin{block}{Normal Block}
+    \begin{itemize}
+    \item Notes appear in the proper handout mode of beamer.
+    \item Item
+    \item Item
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Normal Block}
+    \begin{itemize}
+    \item Item
+    \item \structure{Item}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\lipsum[1]
+
+\section{Methodology}
+
+\begin{frame}{Methodology}
+  \begin{alert}{Pure Alert Block}
+    \begin{itemize}
+    \item Item
+    \item Item
+    \end{itemize}
+  \end{alert}
+\end{frame}
+
+\lipsum[2-4]
+
+\section{Results}
+\begin{frame}{Results}
+  \begin{alertblock}{Alert Styled Block}
+    \begin{itemize}
+    \item Item
+    \item Item
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\lipsum[5-7]
+
+\section{Analysis}
+\begin{frame}{Methodology}
+  \begin{example}{Pure Example Block}
+    \begin{itemize}
+    \item Item
+    \item Item
+    \end{itemize}
+  \end{example}
+\end{frame}
+
+\section{Discussion}
+\begin{frame}{Discussion}
+  \begin{exampleblock}{Example Styled Block}
+    \begin{itemize}
+    \item Item
+    \item Item
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+
+\lipsum
+
+%%%%%%%%%
+\mode<all>
+%%%%%%%%%
+
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "presentation.slides"
+%%% End: 

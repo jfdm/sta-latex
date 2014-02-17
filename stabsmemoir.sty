@@ -1,0 +1,84 @@
+%% ----------------------------------------- [ St Andrews Beamer Notes Styling ]
+%%
+%% Memoir based beamerarticle notes style.
+%%
+%% ----------------------------------------------------------- [ Begin Package ]
+\ProvidesPackage{stabsmemoir}
+%% ---------------------------------------------------------------- [ Packages ]
+\RequirePackage{enumitem}
+\RequirePackage{memhfixc}
+\RequirePackage{sta-colours}
+
+%% ----------------------------------------------------------------- [ Styling ]
+\mode<article>{
+%% Headers
+ \counterwithout{section}{chapter}
+ \setsecnumdepth{subsubsection}
+ \headstyles{komalike}
+ \chapterstyle{madsen}
+ \pagestyle{Ruled}
+
+%% margins
+ \setlength{\trimtop}{0pt}
+ \setlength{\trimedge}{\stockwidth}
+ \addtolength{\trimedge}{-\paperwidth}
+ \settypeblocksize{634pt}{448.13pt}{*}
+ \setulmargins{4cm}{*}{*}
+ \setlrmargins{*}{*}{1}
+ \setmarginnotes{17pt}{51pt}{\onelineskip}
+ \setheadfoot{\onelineskip}{2\onelineskip}
+ \setheaderspaces{*}{2\onelineskip}{*}
+ \checkandfixthelayout
+
+%% Paragraphs
+ \setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
+ \setlength{\parindent}{0pt}
+ \fixpdflayout
+
+%% ------------------------------------------------------------------- [ Lists ]
+\newlist{inparaenum}{enumerate*}{1}
+\setlist[inparaenum,1]{label=(\alph*)}
+
+\newlist{inparadesc}{description*}{1}
+\setlist[inparadesc,1]{font=\bfseries}
+
+% Compact Lists
+\newlist{compactitem}{itemize}{3}
+\setlist[compactitem]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+\setlist[compactitem,1]{label=\textbullet}
+\setlist[compactitem,2]{label=--}
+\setlist[compactitem,3]{label=*}
+
+\newlist{compactdesc}{description}{3}
+\setlist[compactdesc]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+
+\newlist{compactenum}{enumerate}{3}
+\setlist[compactenum]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+\setlist[compactenum,1]{label=\arabic*}
+\setlist[compactenum,2]{label=\alph*}
+\setlist[compactenum,3]{label=\roman*}
+
+%% ------------------------------------------------------------------- [ Title ]
+\setlength{\droptitle}{-12em}
+\pretitle{%
+  \begin{flushright}\LARGE\sffamily
+}
+\posttitle{%
+  \par\end{flushright}
+}
+\preauthor{%
+  \begin{flushright}\large\vskip 0.25em
+}
+\postauthor{%
+  \par\end{flushright}
+}
+\predate{%
+ \begin{flushright}\large
+}
+\postdate{%
+ \par\end{flushright}
+}
+
+}
+\endinput
+%% --------------------------------------------------------------------- [ EOF ]

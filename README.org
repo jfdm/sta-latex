@@ -23,12 +23,16 @@ following files are available:
 + sta-poster.sty :: A style, and convenience, file for the baposter
                     class. baposter, is a LaTeX class for producing
                     posters.
-+ drafting.tex :: A drafting configuration, yet to be incorporated
-                  within the thesis class..
++ sta-drafting.sty :: A drafting configuration.
++ stabs.sty :: A beamer styling package that provides default themes
+               and other goodness for producing both lectures and
+               conference presentations.
++ stabsmemoir.sty :: Beamer article notes stylingk for memoir.
 
 The classes have been designed to adhere closely as possible to the
 University of St Andrews' corporate guidelines, and be used with a
-vanila LaTeX install.
+vanila LaTeX install. =Baposter= is the exception to the rule. If you
+know of *better* preinstalled LaTeX poster classes please let me know.
 
 + Note :: This project is under perpetual development, and so mistakes
           will be made. Any problems please submit an issue with
@@ -39,10 +43,8 @@ will be accepted. Any ideas for features/improvements to the existing
 packages, or ideas for new classes/packages please use githubs issue
 tracker.
 
-Also, a beamer package is under development and not ready for release.
-
 The *examples* folder contains some example classes, and shows how I
-used the files.
+intend the packages to be used.
 
 * Installation
 
