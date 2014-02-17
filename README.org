@@ -38,7 +38,10 @@ know of *better* preinstalled LaTeX poster classes please let me know.
           will be made. Any problems please submit an issue with
           a *MINIMAL FAILING EXAMPLE* to the issue tracker.
 
-Pull request will be welcomed, though I do not guarantee that they
++ Note ::  This project is not officially affiliated with the
+           University nor the department.
+
+Pull requests will be welcomed, though I do not guarantee that they
 will be accepted. Any ideas for features/improvements to the existing
 packages, or ideas for new classes/packages please use githubs issue
 tracker.
