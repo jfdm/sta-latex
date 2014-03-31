@@ -242,8 +242,8 @@
   postheadspace=1em
 ]{thmstyle}
 
-\declaretheorem[style=thmstyle, starred, name={\textbf{Note}}]{note}
-\declaretheorem[style=thmstyle, starred, name={\textbf{Remark}}]{remark}
+\declaretheorem[style=thmstyle, starred, name=Note]{note}
+\declaretheorem[style=thmstyle, starred, name=Remark]{remark}
 \declaretheorem[style=thmstyle, name={Definition}]{definition}
 \declaretheorem[style=thmstyle, name={Example}]{example}
 \declaretheorem[style=thmstyle, name={Exercise}]{exercise}
