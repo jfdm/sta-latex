@@ -87,17 +87,17 @@
 \definecolor{sta-blue}{RGB}{0,83,155}
 \origdate
 \hypersetup{%
-  linkcolor=sta-blue, 
+  linkcolor=sta-blue,
   anchorcolor=sta-blue,
-  citecolor=sta-blue, 
+  citecolor=sta-blue,
   urlcolor=sta-grey-print
 }
 \makepagestyle{sta-frontpage}
 
 \makeoddhead{sta-frontpage}{%
-\includegraphics[width=\textwidth]{\STACS@logo}
-\vspace*{5mm}
-\hspace*{14mm}
+\includegraphics[width=65mm]{\STACS@logo}
+\\[7mm]
+\hspace*{9mm}
 \Large
 \begin{tabular}{l}
 \STACS@department{}\\
