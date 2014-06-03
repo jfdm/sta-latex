@@ -11,21 +11,31 @@
 %%     + customhf   :: custom header and foot
 %%     + customhead :: custom head
 %%     + customfoot :: custom foot
+%%     + notes      :: Produce printable speaker notes
+%%     + poster     :: For posters requires beamerposter
 %%   + Commands
-%%     + Copyrighted graphics commands  
+%%     + Copyrighted graphics commands
 %%       + \includegraphicscopyright[<options>]{<file>}{<Copyright Notice>}
 %%     + Safe print reference command, assumes biblatex.
 %%       + \printReferences{}
 %%   + Modifications
 %%     + Handout mode produces 4up automatically.
-%%     + Handout mode gets section pages
+%%     + If notes option is specified handout is 1up with speaker notes
 %% ----------------------------------------------------------- [ Begin Package ]
 \ProvidesPackage{stabs}
 %% ---------------------------------------------------------------- [ Packages ]
+\RequirePackage[l2tabu,orthodox]{nag}
+\RequirePackage{fixltx2e}
+\RequirePackage[british]{babel}
+\RequirePackage[strict=true]{csquotes}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[protrusion=true, expansion=true]{microtype}
+
 \RequirePackage{ifthen}
 \RequirePackage{hyperref}
 \RequirePackage{graphicx}
 \RequirePackage{sta-colours}
+\RequirePackage{environ}
 %% ----------------------------------------------------------------- [ Options ]
 %% Booleans
 \newboolean{lecttheme}
@@ -39,74 +49,155 @@
 \newboolean{customfoot}
 \setboolean{customfoot}{false}
 
+\newboolean{notes}
+\setboolean{notes}{false}
+
+\newboolean{poster}
+\setboolean{poster}{false}
+
 %% Options
 \DeclareOption{lecture}{\setboolean{lecttheme}{true}}
 \DeclareOption{conf}{\setboolean{conftheme}{true}}
+\DeclareOption{notes}{\setboolean{notes}{true}}
 \DeclareOption{customhead}{\setboolean{customhead}{true}}
 \DeclareOption{customfoot}{\setboolean{customfoot}{true}}
 \DeclareOption{customhf}{%
   \setboolean{customhead}{true}%
   \setboolean{customfoot}{true}}
+\DeclareOption{poster}{\setboolean{poster}{true}}
 
 \ProcessOptions\relax
+
+%% --------------------------------------------------------- [ Poster Requires ]
+\ifthenelse{\boolean{poster}}{
+
+\RequirePackage{tgbonum}
+\RequirePackage[scaled]{helvet}
+\RequirePackage{tgcursor}
+
+\RequirePackage[font=sf]{caption}
+\RequirePackage{setspace}
+\RequirePackage{footmisc}
+\RequirePackage{relsize}
+
+}{}
 %% ---------------------------------------------------------------- [ Commands ]
-%% 
+%%
 \newbox\mytempbox
 \newdimen\mytempdimen
-\newcommand\includegraphicscopyright[3][]{% 
+\newcommand\includegraphicscopyright[3][]{%
   \leavevmode\vbox{\vskip3pt\raggedright%
     \setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
-    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt% 
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
     \fontsize{3}{3.5}%
     \selectfont{\color{black!70}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt}}
 
 \newcommand{\printReferences}{\mode<article>{\printbibliography}}
 
-%% ----------------------------------------------------------------- [ Styling ]
+\newcommand{\email}[1]{\texttt{#1}}
+\newcommand{\headerlogo}[1]{\gdef\STABS@CREST{#1}}
+\newcommand{\www}[1]{\texttt{#1}}
 
-\mode<handout>{
-\AtBeginSection{\frame{\sectionpage}}
-}
-%% ------------------------------------------------ [ Common Styling ]
+\graphicspath{{image/},{figure/}}
+\DeclareGraphicsExtensions{.pdf,.png,.eps,.gif,.jpg}
+
+%% ----------------------------------------------------------------- [ Styling ]
 %% Colour Themes
 \hypersetup{bookmarks=true}
-%% -------------------------------------------------- [ Note Styling ]
-\mode<article>{
-  \hypersetup{
-    colorlinks=true,
-    linkcolor=sta-blue,
-    anchorcolor=sta-blue,
-    citecolor=sta-blue,
-    urlcolor=sta-blue
-  }
-}
 
 %% --------------------------------------------------------- [ Handout Styling ]
-\mode<handout>{
- \RequirePackage{pgfpages}
- \pgfpagesuselayout{4 on 1}[border shrink=5mm]
- \usetheme{Pittsburgh}
- \usecolortheme{dove}
- \usefonttheme{structurebold}
+\mode<handout>{%
+  \RequirePackage{pgfpages}
+  \usetheme{Pittsburgh}
+  \usecolortheme{dove}
+  \usefonttheme{structurebold}
+
+  \ifthenelse{\boolean{notes}}{
+% Include speaker notes.
+    \pgfpagesuselayout{2 on 1}[letterpaper, border shrink=5mm]
+    \setbeameroption{show notes on second screen=bottom}
+    \newlength{\parskipbackup}
+    \setlength{\parskipbackup}{\parskip}
+    \newlength{\parindentbackup}
+    \setlength{\parindentbackup}{\parindent}
+    \newcommand{\baselinestretchbackup}{\baselinestretch}
+    \usetemplatenote{\rmfamily%
+      \setlength{\parindent}{1em} \setlength{\parskip}{1ex}%
+      \renewcommand{\baselinestretch}{1}%
+      \noindent \insertnote%
+
+      \setlength{\parskip}{\parskipbackup}%
+      \setlength{\parindent}{\parindentbackup}%
+      \renewcommand{\baselinestretch}{\baselinestretchbackup}}}{%
+% 4up Handout
+    \pgfpagesuselayout{4 on 1}[border shrink=5mm]}
+
 }
 
 %% ---------------------------------------------------- [ Presentation Styling ]
 \mode<beamer>{
-  \setbeamertemplate{navigation symbols}{}
-  \ifthenelse{\boolean{lecttheme}}{
-    \usetheme{Warsaw}
-  }{
-  \ifthenelse{\boolean{conftheme}}{
-    \usetheme[compress]{Berlin}
-  }{
-    \usetheme{Madrid}}}
-  \usecolortheme[named=sta-blue]{structure}
-  \setbeamertemplate{itemize items}[circle]
-  \setbeamertemplate{enumerate items}[circle]
-  \setbeamertemplate{sections/subsections in toc}[circle]
-}
+  \ifthenelse{\boolean{lecttheme}}{%
+    \usetheme{Warsaw}%
+  }{%
+    \ifthenelse{\boolean{conftheme}}{%
+      \usetheme[compress]{Berlin}%
+    }{%
+      \ifthenelse{\boolean{poster}}{\usetheme{Berlin}}{\usetheme{Madrid}}
+    }}
+
+%% --------------------------------------------------------------- [ Colouring ]
+
+% Beamer
+\usecolortheme[named=sta-blue]{structure}
+
+% Poster Colours
+\ifthenelse{\boolean{poster}}{
+
+\setbeamercolor{headline}{fg=black,bg=white}
+\setbeamercolor{footline}{fg=white, bg=sta-blue}
+\setbeamerfont{footline}{size=\large,series=\tt}
+\setbeamercolor{separation line}{bg=sta-grey}
+
+\setbeamercolor*{block title}{fg=white,bg=sta-blue}
+\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamercolor{upper separation line head}{fg=sta-grey}
+
+}{}}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[rectangle]
+\setbeamertemplate{enumerate items}[rectangle]
+\setbeamertemplate{sections/subsections in toc}[rectangle]
+
 
 %% --------------------------------------------- [ Custom Presentation Styling ]
+\defbeamertemplate*{frametitle}{Stabs theme}[1][left]{
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \begin{beamercolorbox}[sep=0.3cm, wd=\paperwidth]{frametitle}%
+    \usebeamerfont{frametitle}%
+    \vbox{}\vskip-1ex%
+    \if@tempswa\else\csname beamer@fte#1\endcsname\fi%
+    \strut\insertframetitle\hfill
+    \raisebox{-1ex}
+             [0pt]
+             [-\ht\strutbox]{\includegraphics[height=1.75em]{\STABS@CREST}}%
+    \strut\par%
+    {%
+      \ifx%
+          \insertframesubtitle\@empty%
+        \else{%
+          \usebeamerfont{framesubtitle}%
+          \usebeamercolor[fg]{framesubtitle}%
+          \insertframesubtitle\strut\par%
+        }\fi%
+    }%
+    \vskip-1ex%
+    \if@tempswa\else\vskip-.3cm\fi%
+    \end{beamercolorbox}}
+
+% http://tex.stackexchange.com/questions/6267/behaviour-of-frametitle-with-raisebox
+
+
 \ifthenelse{\boolean{customhead}}{%
 %% Header => VFILL | Section
   \mode<beamer>{%
@@ -141,6 +232,75 @@
         {page number in head/foot}%
         \insertframenumber{}/\inserttotalframenumber
       \end{beamercolorbox}}\vskip0pt}
+}{}
+
+%% -------------------------------------------------------- [ Poster Templates ]
+\ifthenelse{\boolean{poster}}{%
+  \selectcolormodel{cmyk}
+
+%% Block Styling
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[ht=3.5ex,
+                         dp=0.5ex,
+                         center,
+                         leftskip=-1em,
+                         colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}%
+    {\phantom{Gg}\insertblocktitle}% phantom because of baseline problem
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex,sep=0.5ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+  \end{beamercolorbox}
+}
+
+%% header
+\setbeamertemplate{headline}{
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \begin{columns}[T]
+      \begin{column}{.3\paperwidth}
+         \insertlogo
+      \end{column}
+      \begin{column}{.675\paperwidth}
+        \vskip4ex
+        \begin{flushright}
+          \usebeamercolor{title in headline}
+              {\color{fg}\textbf{\LARGE{\inserttitle}}\\[1em]}
+          \usebeamercolor{author in headline}
+              {\color{fg}\large{\insertauthor}\\[0.2em]}
+          \usebeamercolor{institute in headline}
+              {\color{fg}\large{\insertinstitute}}
+        \end{flushright}
+      \end{column}
+      \begin{column}{.02\paperwidth}
+      \end{column}
+    \end{columns}
+  \end{beamercolorbox}}
+
+%% Footer
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[ht=4ex,leftskip=1cm,rightskip=1cm]{footline}%
+    \insertshortinstitute
+    \hfill
+    \insertshortauthor
+    \vskip1ex
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+
 }{}
 \endinput
 %% --------------------------------------------------------------------- [ EOF ]

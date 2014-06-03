@@ -14,7 +14,7 @@
 %%     + notes      :: Produce printable speaker notes
 %%     + poster     :: For posters requires beamerposter
 %%   + Commands
-%%     + Copyrighted graphics commands  
+%%     + Copyrighted graphics commands
 %%       + \includegraphicscopyright[<options>]{<file>}{<Copyright Notice>}
 %%     + Safe print reference command, assumes biblatex.
 %%       + \printReferences{}
@@ -71,32 +71,35 @@
 %% --------------------------------------------------------- [ Poster Requires ]
 \ifthenelse{\boolean{poster}}{
 
-%\RequirePackage{tgbonum}
-%\RequirePackage[scaled]{helvet}
-%\RequirePackage{tgcursor}
+\RequirePackage{tgbonum}
+\RequirePackage[scaled]{helvet}
+\RequirePackage{tgcursor}
 
-%\RequirePackage[font=sf]{caption}
+\RequirePackage[font=sf]{caption}
 \RequirePackage{setspace}
-%\RequirePackage{footmisc}
+\RequirePackage{footmisc}
 \RequirePackage{relsize}
 
 }{}
 %% ---------------------------------------------------------------- [ Commands ]
-%% 
+%%
 \newbox\mytempbox
 \newdimen\mytempdimen
-\newcommand\includegraphicscopyright[3][]{% 
+\newcommand\includegraphicscopyright[3][]{%
   \leavevmode\vbox{\vskip3pt\raggedright%
     \setbox\mytempbox=\hbox{\includegraphics[#1]{#2}}%
-    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt% 
+    \mytempdimen=\wd\mytempbox\box\mytempbox\par\vskip1pt%
     \fontsize{3}{3.5}%
     \selectfont{\color{black!70}{\vbox{\hsize=\mytempdimen#3}}}\vskip3pt}}
 
 \newcommand{\printReferences}{\mode<article>{\printbibliography}}
 
 \newcommand{\email}[1]{\texttt{#1}}
-\newcommand{\logocommand}[1]{\gdef\@logocommand{#1}}
+\newcommand{\headerlogo}[1]{\gdef\STABS@CREST{#1}}
 \newcommand{\www}[1]{\texttt{#1}}
+
+\graphicspath{{image/},{figure/}}
+\DeclareGraphicsExtensions{.pdf,.png,.eps,.gif,.jpg}
 
 %% ----------------------------------------------------------------- [ Styling ]
 %% Colour Themes
@@ -122,7 +125,7 @@
       \setlength{\parindent}{1em} \setlength{\parskip}{1ex}%
       \renewcommand{\baselinestretch}{1}%
       \noindent \insertnote%
-      
+
       \setlength{\parskip}{\parskipbackup}%
       \setlength{\parindent}{\parindentbackup}%
       \renewcommand{\baselinestretch}{\baselinestretchbackup}}}{%
@@ -168,6 +171,33 @@
 
 
 %% --------------------------------------------- [ Custom Presentation Styling ]
+\defbeamertemplate*{frametitle}{Stabs theme}[1][left]{
+  \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+  \begin{beamercolorbox}[sep=0.3cm, wd=\paperwidth]{frametitle}%
+    \usebeamerfont{frametitle}%
+    \vbox{}\vskip-1ex%
+    \if@tempswa\else\csname beamer@fte#1\endcsname\fi%
+    \strut\insertframetitle\hfill
+    \raisebox{-1ex}
+             [0pt]
+             [-\ht\strutbox]{\includegraphics[height=1.75em]{\STABS@CREST}}%
+    \strut\par%
+    {%
+      \ifx%
+          \insertframesubtitle\@empty%
+        \else{%
+          \usebeamerfont{framesubtitle}%
+          \usebeamercolor[fg]{framesubtitle}%
+          \insertframesubtitle\strut\par%
+        }\fi%
+    }%
+    \vskip-1ex%
+    \if@tempswa\else\vskip-.3cm\fi%
+    \end{beamercolorbox}}
+
+% http://tex.stackexchange.com/questions/6267/behaviour-of-frametitle-with-raisebox
+
+
 \ifthenelse{\boolean{customhead}}{%
 %% Header => VFILL | Section
   \mode<beamer>{%
@@ -206,42 +236,35 @@
 
 %% -------------------------------------------------------- [ Poster Templates ]
 \ifthenelse{\boolean{poster}}{%
-
-\setbeamertemplate{items}[square]
   \selectcolormodel{cmyk}
 
 %% Block Styling
 \setbeamertemplate{block begin}{
-  \vskip1ex
-  \begin{beamercolorbox}[ht=3.5ex, dp=0.5ex,
+  \vskip.75ex
+  \begin{beamercolorbox}[ht=3.5ex,
+                         dp=0.5ex,
                          center,
-                         leftskip=-1em, colsep*=.75ex]
-                         {block title}%
-    \usebeamerfont*{block title}
-    \centering
-    \insertblocktitle
+                         leftskip=-1em,
+                         colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}%
+    {\phantom{Gg}\insertblocktitle}% phantom because of baseline problem
   \end{beamercolorbox}%
-  {\ifbeamercolorempty[bg]{block body}
-      {}
-      {\nointerlineskip\vskip-0.5pt}}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
   \usebeamerfont{block body}%
-  \begin{beamercolorbox}[colsep*=.75ex,
-                         sep=0.5ex,vmode]
-                         {block body}%
-     \ifbeamercolorempty[bg]{block body}
-        {\vskip-.25ex}
-        {\vskip-.75ex}
-        \vbox{}}
-
-  \setbeamertemplate{block end}{\end{beamercolorbox}}
+  \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex,sep=0.5ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+  \end{beamercolorbox}
+}
 
 %% header
-\setbeamertemplate{headline}{  
+\setbeamertemplate{headline}{
   \leavevmode
   \begin{beamercolorbox}[wd=\paperwidth]{headline}
     \begin{columns}[T]
       \begin{column}{.3\paperwidth}
-         \@logocommand
+         \insertlogo
       \end{column}
       \begin{column}{.675\paperwidth}
         \vskip4ex
@@ -264,10 +287,11 @@
   \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
     \rule{0pt}{2pt}
   \end{beamercolorbox}
-  
+
   \begin{beamercolorbox}[ht=4ex,leftskip=1cm,rightskip=1cm]{footline}%
-\centering
     \insertshortinstitute
+    \hfill
+    \insertshortauthor
     \vskip1ex
   \end{beamercolorbox}
 
@@ -278,17 +302,5 @@
 
 
 }{}
-\RequirePackage{xspace}
-\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
-\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
-\def\eg{{e.g}\onedot} \def\Eg{{E.g}\onedot}
-\def\ie{{i.e}\onedot} \def\Ie{{I.e}\onedot}
-\def\cf{{c.f}\onedot} \def\Cf{{C.f}\onedot}
-\def\etc{{etc}\onedot}
-\def\vs{{vs}\onedot}
-\def\wrt{w.r.t\onedot}
-\def\dof{d.o.f\onedot}
-\def\etal{{et al}\onedot}
-
 \endinput
 %% --------------------------------------------------------------------- [ EOF ]
