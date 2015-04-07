@@ -1,9 +1,3 @@
-%% --------------------------------------------------------------- [ My Thesis ]
-\documentclass[
-%draft
-final
-]{sta-thesis}
-
 \usepackage[style=alphabetic,natbib=true]{biblatex}
 \usepackage{lipsum}
 
@@ -35,7 +29,7 @@ Third Line\\
 \bibliography{biblio.bib}
 %% ------------------------------------------------------------------- [ Begin ]
 \begin{document}
-\maketitle 
+\maketitle
 %% ------------------------------------------------------------- [ Frontmatter ]
 \frontmatter
 %%
@@ -43,27 +37,19 @@ Third Line\\
 \begin{abstract}
 
 \end{abstract}
-\newpage
-\begin{declaration}
-I declare that the material submitted for assessment is my own work,
-except where credit is explicitly given to others by citation or
-acknowledgement.
-\end{declaration}
+\cleardoublepage
 
-\begin{copyrightnotice}
-In submitting this project to the \emph{\theuniversity}, I give
-permission for it to be made available for use in accordance with the
-regulations of the \emph{\theuniversity}. I also give permission for
-the title and abstract to be published and for copies of the report to
-be made and supplied to any bona fide library or research worker, and
-to be made available on the World Wide Web. 
-\end{copyrightnotice}
+
+\input{declaration.tex}
 
 %% -------------------------------------------------------------- [ Dedication ]
 \begin{dedication}
 Some dedication
 \end{dedication}
 
+\begin{acknowledgements}
+I acknowledge people.
+\end{acknowledgements}
 %% --------------------------------------------------------------------- [ TOC ]
 \tableofcontents
 
@@ -203,10 +189,11 @@ That fought with us upon Saint Crispin's day.
 \lipsum
 
 %% ------------------------------------------------------------- [ Back Matter ]
-\backmatter 
+\backmatter
 %% ------------------------------------------------------------ [ Bibliography ]
 \printbibliography
 %% ----------------------------------------------------------- [ List o' Stuff ]
+\cleardoublepage
 \listoftheorems[ignore={note,remark}]
 
 \end{document}

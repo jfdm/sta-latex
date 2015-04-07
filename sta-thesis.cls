@@ -160,6 +160,7 @@
 \else
   \RequirePackage[sc]{mathpazo}
   \RequirePackage{helvet}
+  \linespread{1.05}
   \RequirePackage{courier}
 \fi
 
