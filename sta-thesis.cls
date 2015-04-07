@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Copyright 2012 - Jan de Muijnck-Hughes
+%% Copyright 2015 - Jan de Muijnck-Hughes
 %%
 %% This work may be distributed and/or modified under the  conditions
 %% of the LaTeX Project Public License, either version 1.3c of this
@@ -17,14 +17,13 @@
 %% This work consists of the file: sta-thesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-thesis}[2012/03/15 v2012.03.15 sta-thesis]
+\ProvidesClass{sta-thesis}[2015/04/07 v2015.04.07 sta-thesis]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for producing theses. This style builds upon existing
 %% LaTeX packages combining them into a consistent class that is
 %% (hopefully) easy to use, making the writing of a thesis easier.
 %% Important packages included by default are:
 %%   Memoir
-%%   Glossaries
 %%   todonotes
 %%   amsmath
 %%   thmtools
@@ -33,25 +32,59 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Class Options:
-%%   coverpage -> add a cool coverpage
-%%   print -> ready thesis for binding, default is electronic
+%%
+%%   customfonts -> Turn of import of default fonts
+%%
+%%
 %% Mutually Exclusive options:
-%%   draft -> send draft mode to memoir and todonotes
-%%   final -> send final mode to memoir and disable todonotes
+%%
+%%   + Thesis Mode.
+%%     + draft  -> send draft mode to memoir and todonotes
+%%     + final* -> send final mode to memoir and disable todonotes
+%%
+%%   + Display Mode.
+%%     + print*     -> ready thesis for printing.
+%%     + electronic -> ready thesis for an electronic version.
+%%     + screen     -> ready thesis for displaying in ebooks.
+%%
+%%   + Linespacing for print version.
+%%     + single*  -> Single line spacing
+%%     + onehalf  -> 1.5 line spacing
+%%     + double   -> Double line spacing
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TODO:
-%% Update lists to add inpara enums
-%% Add predefined declaration and copyright pages
-%% Add glossary stylings for math notation
-%% Add predefined signature commands for declaration
+%%
+%% Set drafting page styling using Memoir only.
+%% Setup KVOptions for booleans.
+%%
+% ---------------------------------------------------------------------- [ EOH ]
+% ------------------------------------------------------------------ [ Options ]
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\LoadClass[pdftex,british,a4paper,10pt]{memoir}
-% -------------------------------------------------------- [ Options ]
+% Line Spacing Options for Print
+\newif\ifsingle{}
+\newif\ifonehalf{}
+\newif\ifdouble{}
 
-\newif\ifprinting
+% Which display mode are we in.
+\newif\ifprinting{}
+\newif\ifscreen{}
+\newif\ifelectronic{}
 
+% Use custom fonts
+\newif\ifcustomfonts{}
+
+% Default boolean values
+\printingtrue
+\screenfalse
+\electronicfalse
+
+\singlefalse
+\onehalftrue
+\doublefalse
+
+\customfontsfalse
+% --------------------------------------------------------- [ Drafting Options ]
 \DeclareOption{draft}{%
   \PassOptionsToClass{draft}{memoir}
 }
@@ -60,12 +93,54 @@
   \PassOptionsToClass{final}{memoir}
   \PassOptionsToPackage{disable,colorinlistoftodos}{todonotes}
 }
+% ----------------------------------------------------- [ Line Spacing Options ]
+\DeclareOption{single}{%
+  \doublefalse{}
+  \onehalffalse{}
+  \singletrue{}
+}
+\DeclareOption{onehalf}{%
+  \doublefalse{}
+  \onehalftrue{}
+  \singlefalse{}
+}
+\DeclareOption{double}{%
+  \doubletrue{}
+  \onehalffalse{}
+  \singlefalse{}
+}
+% ----------------------------------------------------- [ Display Mode Options ]
+\DeclareOption{screen}{%
+  \electronicfalse{}
+  \printingfalse{}
+  \screentrue{}
+  \PassOptionsToClass{pdftex,british,10pt,ebook}{memoir}
+}
 
-\DeclareOption{print}{\printingtrue}
+\DeclareOption{print}{%
+  \electronicfalse{}
+  \screenfalse{}
+  \printingtrue{}
+  \PassOptionsToClass{pdftex,british,12pt,a4paper}{memoir}
+}
 
-\ProcessOptions
-
-% ------------------------------------------------------- [ Packages ]
+\DeclareOption{electronic}{%
+  \printingfalse{}
+  \screenfalse{}
+  \electronictrue{}
+  \PassOptionsToClass{pdftex,british,12pt,a4paper}{memoir}
+}
+% ------------------------------------------------- [ Custom Font Usage Option ]
+\DeclareOption{customfonts}{%
+  \customfontstrue{}
+}
+% --------------------------------------------------------------------- [ Misc ]
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
+% ---------------------------------------------------------- [ Process Options ]
+\ProcessOptions\relax
+% ------------------------------------------------------------------- [ Memoir ]
+\LoadClass{memoir}
+% ----------------------------------------------------------------- [ Packages ]
 \RequirePackage[l2tabu,
                 orthodox]{nag}
 \RequirePackage{fixltx2e}
@@ -78,10 +153,15 @@
 \RequirePackage{tocbibind}
 \RequirePackage{xcolor}
 \RequirePackage[british,iso]{isodate}
+\RequirePackage{color,calc,soul,fourier}
 
-\RequirePackage[sc]{mathpazo}
-\RequirePackage{helvet}
-\linespread{1.05}
+\ifcustomfonts%
+%
+\else
+  \RequirePackage[sc]{mathpazo}
+  \RequirePackage{helvet}
+  \RequirePackage{courier}
+\fi
 
 \RequirePackage{sta-colours}
 %% Math Packages
@@ -94,13 +174,14 @@
                 error]{onlyamsmath}
 \RequirePackage[fixamsmath]{mathtools}
 
+\RequirePackage[inline]{enumitem}
 \RequirePackage{multirow}
 \RequirePackage{multicol}
-\RequirePackage{graphicx}
+\RequirePackage[pdftex]{graphicx}
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{enumitem}
-\RequirePackage{hyperref}
+\RequirePackage[pdftex]{hyperref}
 \RequirePackage{memhfixc}
 
 %% For Draft Mode
@@ -114,28 +195,24 @@
 %% ------------------------------------------------------- [ Metadata Commands ]
 
 \newcommand{\university}[1]{\gdef\@university{#1}}
-\newcommand{\theuniversity}[1]{\@university}
+\newcommand{\theuniversity}[1]{\@university\xspace}
 \newcommand{\degree}[1]{\gdef\@degree{#1}}
+\newcommand{\thedegree}[1]{\@degree\xspace}
 \newcommand{\logocmd}[1]{\gdef\@logocmd{#1}}
-
-% For ready made delcaration
-% \newcommand{\startdate}[2]{%
-%   \gdef\@startyear{#1}
-%   \gdef\@startmonth{#2}
-% }
-% \newcommand{\enddate}[2]{%
-%   \gdef\@endyear{#1}
-%   \gdef\@endmonth{#2}
-% }
 
 \newcommand{\address}[1]{\gdef\@address{#1}}
 \newcommand{\email}[1]{\gdef\@email{%
-\ifprinting\texttt{#1}\else\href{mailto:#1}{#1}\fi}}
+  \ifprinting%
+    \texttt{#1}
+  \else%
+    \href{mailto:#1}{#1}
+  \fi}}
 \newcommand{\keywordlist}[1]{\gdef\@keywordlist{#1}}
 
 % ------------------------------------------------------ [ Page Layout Styling ]
+% ------------------------------------------------------------ [ Draft Styling ]
 \ifdraft{
-%% ---------------------------------------------------------- [ Line Numbering ]
+%% Line Numbering
   \RequirePackage[pagewise]{lineno}
   \RequirePackage{geometry}
   \renewcommand{\linenumberfont}{\normalfont\scriptsize\bfseries}
@@ -143,7 +220,7 @@
   \linenumbers{}
   \modulolinenumbers[2]
   \DoubleSpacing{}
-%% ------------------------------------------------------------- [ Page Layout ]
+%% Page Layout
   \geometry{%
     asymmetric,
     includeall,
@@ -153,24 +230,63 @@
     marginparsep=5mm,
     marginparwidth=55mm
   }
-%% ------------------------------------------------------- [ Paragraph Styling ]
+%% Paragraph Styling
   \setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
   \setlength{\parindent}{0pt}
 }{%
-  \settrimmedsize{297mm}{210mm}{*}
-  \setlength{\trimtop}{0pt}
-  \setlength{\trimedge}{\stockwidth}
-  \addtolength{\trimedge}{-\paperwidth}
-  \settypeblocksize{634pt}{448.13pt}{*}
-  
-  \setmarginnotes{17pt}{51pt}{\onelineskip}
-  \setheadfoot{\onelineskip}{2\onelineskip}
-  \setheaderspaces{*}{2\onelineskip}{*}
+% ----------------------------------------------------- [ Styling for Printing ]
+  \ifprinting
+    \settrimmedsize{\stockheight}{\stockwidth}{*}
+    \settrims{0pt}{0pt}
 
-  \setlrmarginsandblock{3cm}{2.5cm}{*}
-  \setulmarginsandblock{4cm}{*}{*}
-  \checkandfixthelayout
-  \fixpdflayout
+    \setlrmarginsandblock{*}{30mm}{1.5}
+    \setulmarginsandblock{4cm}{*}{*}                      %
+
+    \setheadfoot{\onelineskip}{2\onelineskip}
+    \setheaderspaces{*}{2\onelineskip}{*}
+
+    \ifsingle
+      \SingleSpacing{}
+    \fi
+    \ifonehalf
+     \OnehalfSpacing{}
+    \fi
+    \ifdouble
+      \DoubleSpacing{}
+    \fi
+  \fi
+% --------------------------------------------------- [ Styling for Electronic ]
+  \ifelectronic
+    \settrimmedsize{\stockheight}{\stockwidth}{*}
+    \settrims{0pt}{0pt}
+
+    \settypeblocksize{634pt}{448.13pt}{*}
+    \setulmargins{4cm}{*}{*}
+    \setlrmargins{*}{*}{1}
+
+    \setheadfoot{\onelineskip}{2\onelineskip}
+    \setheaderspaces{*}{2\onelineskip}{*}
+
+    \OnehalfSpacing{}
+  \fi
+% ------------------------------------------------------- [ Styling for Screen ]
+  \ifscreen
+    \settrimmedsize{\stockheight}{\stockwidth}{*}
+    \settrims{0pt}{0pt}
+
+    \setlrmarginsandblock{*}{0.75in}{1}
+    \setulmarginsandblock{0.75in}{*}{*}
+
+    \setheadfoot{\onelineskip}{2\onelineskip}
+    \setheaderspaces{*}{2\onelineskip}{*}
+
+    \setmarginnotes{0pt}{0pt}{0pt}
+
+    \OnehalfSpacing{}
+\fi
+%% Finalise the Layout
+  \checkandfixthelayout{}
+  \fixpdflayout{}
 }
 
 %% ------------------------------------------------ [ Default Look and Feel ]
@@ -188,7 +304,6 @@
   citecolor=black,
   urlcolor=black
  }
-
 \else
  \selectcolormodel{RGB}
  \hypersetup{%
@@ -199,11 +314,65 @@
   urlcolor=sta-blue
  }
 \fi
+%% ---------------------------------------------------------------- [ enumitem ]
+% Provide paralist compatible macroes
+% TODO Make native
+% Within Paragraph lists
+\newlist{inparaenum}{enumerate*}{1}
+\setlist[inparaenum,1]{label=(\alph*),
+before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
+}
+
+\newlist{inparadesc}{description*}{1}
+\setlist[inparadesc,1]{%
+  font=\bfseries,%
+  before=\unskip{: },%
+  itemjoin={{; }},%
+  itemjoin*={{; and }}%
+}
+
+% Compact Lists
+\newlist{compactitem}{itemize}{3}
+\setlist[compactitem]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+\setlist[compactitem,1]{label=\textbullet}
+\setlist[compactitem,2]{label=--}
+\setlist[compactitem,3]{label=*}
+
+\newlist{compactdesc}{description}{3}
+\setlist[compactdesc]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+
+\newlist{compactenum}{enumerate}{3}
+\setlist[compactenum]{topsep=0pt,partopsep=0pt,itemsep=0pt,parsep=0pt}
+\setlist[compactenum,1]{label=\arabic*)}
+\setlist[compactenum,2]{label=\alph*)}
+\setlist[compactenum,3]{label=\roman*)}
+
+%% ------------------------------------------------------------ [ contractions ]
+
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\eg{{e.g}\onedot}
+\def\ie{{i.e}\onedot}
+\def\cf{{cf}\onedot}
+\def\etc{{etc}\onedot}
+\def\vs{{vs}\onedot}
+\def\wrt{w.r.t\onedot}
+\def\dof{d.o.f\onedot}
+\def\etal{{et al}\onedot}
+
+% ----------------------------------------------------------------- [ Graphics ]
+\graphicspath{{image/}{figure/}{logo/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.eps}
 
 %% ----------------------------------------------------- [ Epigraph formatting ]
 \epigraphposition{flushright}
 \epigraphtextposition{flushleftright}
 \epigraphsourceposition{flushright}
+\setlength{\epigraphwidth}{0.5\textwidth}
+%% ---------------------------------------------------------------- [ Abstract ]
+\renewcommand{\abstractnamefont}{\sffamily\LARGE\bfseries}
+\renewcommand{\abstracttextfont}{\normalfont\normalsize}
+\addto\captionsbritish{\renewcommand*\abstractname{Abstract}}
 
 %% ---------------------------------------------- [ Chapter and Heading Styles ]
 % Draft
@@ -231,6 +400,7 @@
  \pagestyle{Ruled}
 }
 
+% Headings
 \headstyles{komalike}
 \chapterstyle{madsen}
 
@@ -242,8 +412,8 @@
   postheadspace=1em
 ]{thmstyle}
 
-\declaretheorem[style=thmstyle, starred, name=Note]{note}
-\declaretheorem[style=thmstyle, starred, name=Remark]{remark}
+\declaretheorem[style=thmstyle, starred, name={\textbf{Note}}]{note}
+\declaretheorem[style=thmstyle, starred, name={\textbf{Remark}}]{remark}
 \declaretheorem[style=thmstyle, name={Definition}]{definition}
 \declaretheorem[style=thmstyle, name={Example}]{example}
 \declaretheorem[style=thmstyle, name={Exercise}]{exercise}
@@ -280,31 +450,29 @@
 
 % ----------------------------------------------- [ Predefined Pages ]
 %% Dedication Page
-\newenvironment{dedication}{%
+\NewEnviron{dedication}{%
  \thispagestyle{empty}
- \begin{flushright}%
  \vspace*{0.2\textheight}%
-}{%
+ \begin{flushright}%
+ \BODY{}
  \end{flushright}%
  \cleardoublepage
 }
+
 %% Acknowledgement Page
-\newenvironment{acknowledgements}{%
- \chapter*{Acknowledgements}%
- \addcontentsline{toc}{chapter}{Acknowledgements}
-}{\cleardoublepage}
+\NewEnviron{acknowledgements}{%
+  \chapter*{Acknowledgements}
+  %\addcontentsline{toc}{chapter}{Acknowledgements}
+  \BODY{}
+  \cleardoublepage
+}
 
 %% Declaration Page
-\newenvironment{declaration}{%
- \thispagestyle{empty}
- \vspace*{0.2\textheight}%
-}{\cleardoublepage}
-
-%% Copyright Page
-\newenvironment{copyrightnotice}{%
- \thispagestyle{empty}
- \vspace*{0.2\textheight}%
-}{\cleardoublepage}
+\NewEnviron{declaration}{%
+\thispagestyle{plain}
+\BODY{}
+\cleardoublepage
+}
 
 %% -------------------------------------------------------------- [ Title Page ]
 \renewcommand{\maketitle}{%
@@ -313,34 +481,62 @@
   pdftitle={\@title},
   pdfkeywords={\@keywordlist}
  }
-{\thispagestyle{empty}
+ \begin{titlingpage}
  \centering
  \vspace*{0.025\textheight}
- \rule{\linewidth}{0.1em}\\[2em]
- {\Huge\bfseries\@title }\\[1em]
- \rule{\linewidth}{0.1em}\\[4em]
- {\LARGE THESIS}
+ {\Huge\bfseries\@title }
  \vfill
- {\Large submitted to the}
+ {\Large by}
  \vfill
- {\LARGE\textsc \@university}
- \vfill
- {\Large for the degree of}
- \vfill
- {\LARGE\textsc \@degree}
- \vfill
- {\Large by}\\[0.1em]
- {\Large\@author}\\[0.1em]
- {\Large\@email}
+ {\huge\@author}\\[0.1em]
  \vfill
  \@logocmd
  \vfill
- {\large\@address}\\[0.1em]
- {\large\@date}
+ {\Large This thesis is submitted to the}
  \vfill
-\cleardoublepage
-%\pagestyle{Ruled}
+ {\LARGE\textsc \@university}
+ \vfill
+ {\Large in partial fulfilment for the degree of}
+ \vfill
+ {\LARGE\textsc \@degree}
+ \vfill
+ {\Large submitted on}\\[2em]
+ {\Huge\@date}
+ \vfill
+ {\large Copyright\xspace\copyright\xspace\the\year\xspace by\xspace\@author}
+ \vfill
+ \end{titlingpage}
+ \thispagestyle{plain}
 }
+
+\newlength\dlf@normtxtw
+\setlength\dlf@normtxtw{\textwidth}
+\def\myhelvetfont{\def\sfdefault{mdput}}
+\newsavebox{\feline@chapter}
+\newcommand\feline@chapter@marker[1][4cm]{%
+  \sbox\feline@chapter{%
+    \resizebox{!}{#1}{\fboxsep=1pt%
+      \colorbox{black}{\color{white}\bfseries\sffamily\thechapter}%
+    }}%
+  \rotatebox{90}{%
+    \resizebox{%
+      \heightof{\usebox{\feline@chapter}}+\depthof{\usebox{\feline@chapter}}}%
+    {!}{\scshape\so\@chapapp}}\quad%
+  \raisebox{\depthof{\usebox{\feline@chapter}}}{\usebox{\feline@chapter}}%
+}
+\newcommand\feline@chm[1][4cm]{%
+  \sbox\feline@chapter{\feline@chapter@marker[#1]}%
+  \makebox[0pt][l]{% aka \rlap
+    \makebox[1cm][r]{\usebox\feline@chapter}%
+  }}
+\makechapterstyle{daleif1}{
+  \renewcommand\chapnamefont{\normalfont\Large\scshape\raggedleft\so}
+  \renewcommand\chaptitlefont{\normalfont\huge\bfseries\scshape\color{black}}
+  \renewcommand\chapternamenum{}
+  \renewcommand\printchaptername{}
+  \renewcommand\printchapternum{\null\hfill\feline@chm[2.5cm]\par}
+  \renewcommand\afterchapternum{\par\vskip\midchapskip}
+  \renewcommand\printchaptertitle[1]{\chaptitlefont\raggedleft ##1\par}
 }
 \endinput
 % ------------------------------------------------------------ [ EOF ]
