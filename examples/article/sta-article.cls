@@ -35,13 +35,10 @@
 \RequirePackage{xspace}
 \RequirePackage{environ}
 \RequirePackage[colorlinks=true]{hyperref}
-% ----------------------------------------- [ Font PackageWithOptionss ]
-\RequirePackage[sc]{mathpazo}
-\RequirePackage{helvet}
-\linespread{1.05}
+\RequirePackage{sta-colours}
+
 \RequirePackage[protrusion=true, expansion=true]{microtype}
-% ---------------------------------------- [ Style PackageWithOptionss ]
-\RequirePackage[usenames,dvipsnames,svgnames]{xcolor}
+
 \RequirePackage{graphicx}
 
 %% ---------------------------------------------------------------- [ Commands ]
@@ -61,59 +58,45 @@
 
 \setheadfoot{17mm}{30mm}
 \setheaderspaces{10mm}{*}{*}
-\checkandfixthelayout
+\checkandfixthelayout{}
 
 % Paragraph Spacing
 \setlength{\parskip}{1.75ex plus 0.2ex minus 0.42ex}
 \setlength{\parindent}{0pt}
 
-\fixpdflayout
+\fixpdflayout{}
 \setsecnumdepth{subsubsection}
 \settocdepth{subsection}
 \headstyles{komalike}
 %% ------------------------------------------------------- [ Header and Footer ]
 
-\definecolor{sta-grey-print}{cmyk}{0.0, 0.2, 0.0, 0.68}
-\definecolor{sta-blue}{RGB}{0,83,155}
-\origdate
+\origdate%
 \hypersetup{%
-  linkcolor=sta-blue, 
+  linkcolor=sta-blue,
   anchorcolor=sta-blue,
-  citecolor=sta-blue, 
-  urlcolor=sta-grey-print
+  citecolor=sta-blue,
+  urlcolor=sta-black
 }
 \makepagestyle{sta-frontpage}
 
 \makeoddhead{sta-frontpage}{%
-\includegraphics[width=\textwidth]{\STACS@logo}
-\vspace*{5mm}
+\includegraphics[height=17mm]{\STACS@logo}\newline
+\vspace{5mm}
 \hspace*{14mm}
-\Large
-\begin{tabular}{l}
+\LARGE
+\begin{tabular}{>{\sffamily}l}
 \STACS@department{}\\
 \end{tabular}
 }{}{}
 
 \makeevenhead{sta-frontpage}{}{}{}
 
-\makefootrule{sta-frontpage}{\textwidth}{1pt}{1.5mm}
-
-\makeoddfoot{sta-frontpage}{}{\color{sta-grey-print}
-\hspace{14mm}
-\begin{tabular}{c}
-\STACS@address\\
-T:~\STACS@tel:\xspace\STACS@fax\\[0.5em]
-\scriptsize The University of St Andrews is a charity registered in Scotland. No: SC013532AD\\
-\end{tabular}
-}{}
-
-\makeheadfootruleprefix{sta-frontpage}
-   {\color{sta-grey-print}}
-   {\color{sta-grey-print}}
+\makeoddfoot{sta-frontpage}{}{Page-\thepage}{}
 
 \makepagestyle{sta-normalpage}
 \copypagestyle{sta-normalpage}{sta-frontpage}
-\makeoddhead{sta-normalpage}{\@author}{Page-\thepage}{{\origdate\@date}}
+
+\makeoddhead{sta-normalpage}{}{}{}
 \makeevenhead{sta-normalpage}{}{}{}
 \pagestyle{sta-normalpage}
 
@@ -121,7 +104,6 @@ T:~\STACS@tel:\xspace\STACS@fax\\[0.5em]
 
 \AtBeginDocument{%
 \thispagestyle{sta-frontpage}
-\sffamily
 \pagestyle{sta-normalpage}
 }
 
@@ -130,8 +112,7 @@ T:~\STACS@tel:\xspace\STACS@fax\\[0.5em]
     \LARGE\thetitle
   \end{center}
   \begin{center}
-    \large\theauthor
+    \large\href{mailto:\STACS@email}{\theauthor}
     \par\thedate
   \end{center}}
-
 \endinput
