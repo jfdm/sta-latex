@@ -74,16 +74,20 @@
 % Use custom fonts
 \newif\ifcustomfonts{}
 
+% Cover Page
+\newif\ifcoverpage{}
+
 % Default boolean values
-\printingtrue
-\screenfalse
-\electronicfalse
+\printingtrue{}
+\screenfalse{}
+\electronicfalse{}
 
-\singlefalse
-\onehalftrue
-\doublefalse
+\singlefalse{}
+\onehalftrue{}
+\doublefalse{}
 
-\customfontsfalse
+\customfontsfalse{}
+\coverpagefalse{}
 % --------------------------------------------------------- [ Drafting Options ]
 \DeclareOption{draft}{%
   \PassOptionsToClass{draft}{memoir}
@@ -134,6 +138,10 @@
 \DeclareOption{customfonts}{%
   \customfontstrue{}
 }
+% ---------------------------------------------------------------- [ Coverpage ]
+\DeclareOption{coverpage}{%
+  \coverpagetrue{}
+}
 % --------------------------------------------------------------------- [ Misc ]
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
 % ---------------------------------------------------------- [ Process Options ]
@@ -143,10 +151,7 @@
 % ----------------------------------------------------------------- [ Packages ]
 \RequirePackage[l2tabu,
                 orthodox]{nag}
-\RequirePackage{fixltx2e}
-\RequirePackage[T1]{fontenc}
-\RequirePackage[british]{babel}
-\RequirePackage[strict=true]{csquotes}
+\RequirePackage{etoolbox}
 \RequirePackage{microtype}
 \RequirePackage{environ}
 \RequirePackage{xspace}
@@ -154,14 +159,17 @@
 \RequirePackage{xcolor}
 \RequirePackage[british,iso]{isodate}
 \RequirePackage{color,calc,soul,fourier}
+\RequirePackage[british]{babel}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[strict=true]{csquotes}
 
 \ifcustomfonts%
 %
 \else
   \RequirePackage[sc]{mathpazo}
   \RequirePackage{helvet}
-  \linespread{1.05}
   \RequirePackage{courier}
+  \RequirePackage[T1]{fontenc}
 \fi
 
 \RequirePackage{sta-colours}
@@ -169,22 +177,24 @@
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amssymb}
-\RequirePackage{amsfonts}
+\RequirePackage[fixamsmath]{mathtools}
 \RequirePackage{thmtools}
+\RequirePackage{thm-restate}
+\RequirePackage{fixmath}
 \RequirePackage[all,
                 error]{onlyamsmath}
-\RequirePackage[fixamsmath]{mathtools}
 
 \RequirePackage[inline]{enumitem}
 \RequirePackage{multirow}
 \RequirePackage{multicol}
-\RequirePackage[pdftex]{graphicx}
+\RequirePackage[pdftex,final]{graphicx}
 \RequirePackage{array}
 \RequirePackage{booktabs}
 \RequirePackage{enumitem}
 \RequirePackage[pdftex]{hyperref}
 \RequirePackage{memhfixc}
-
+\RequirePackage{bookmark}
+\RequirePackage{tikz}
 %% For Draft Mode
 \RequirePackage[obeyDraft,
                 colorinlistoftodos,
@@ -193,14 +203,18 @@
                 linecolor=black]{todonotes}
 \RequirePackage{ifdraft}
 
+% ------------------------------------------------ [ Because..you know...LaTeX ]
+\let\@@tikzpicture\tikzpicture
+\def\tikzpicture{\catcode`\$=3 \@@tikzpicture}
 %% ------------------------------------------------------- [ Metadata Commands ]
 
 \newcommand{\university}[1]{\gdef\@university{#1}}
 \newcommand{\theuniversity}[1]{\@university\xspace}
 \newcommand{\degree}[1]{\gdef\@degree{#1}}
-\newcommand{\thedegree}[1]{\@degree\xspace}
+\newcommand{\thedegree}{\@degree\xspace}
 \newcommand{\logocmd}[1]{\gdef\@logocmd{#1}}
-
+\newcommand{\wordcount}[1]{\gdef\@wordcount{#1}}
+\newcommand{\thewordcount}{\@wordcount\xspace}
 \newcommand{\address}[1]{\gdef\@address{#1}}
 \newcommand{\email}[1]{\gdef\@email{%
   \ifprinting%
@@ -209,8 +223,44 @@
     \href{mailto:#1}{#1}
   \fi}}
 \newcommand{\keywordlist}[1]{\gdef\@keywordlist{#1}}
+\newcommand{\startdate}[2]{\gdef\@startmonth{#1}\gdef\@startyear{#2}}
+\newcommand{\finishdate}[2]{\gdef\@finishmonth{#1}\gdef\@finishyear{#2}}
 
+\newcommand{\thestartdate}{\@startmonth~\@startyear}
+\newcommand{\thestartmonth}{\@startmonth}
+\newcommand{\thestartyear}{\@startyear}
+
+\newcommand{\thefinishdate}{\@finishmonth~\@finishyear}
+\newcommand{\thefinishmonth}{\@finishmonth}
+\newcommand{\thefinishyear}{\@finishyear}
+
+\newcommand{\thesigningdate}{{\origdate\thedate}}
+
+\newcommand{\signature}[1]{%
+\vspace{3em}
+\noindent%
+Signature of~#1:\xspace\dotfill\\
+\begin{flushright}
+  Date:~\thesigningdate{}
+\end{flushright}}
+
+\newcommand{\mySignature}{\signature{Candidate}}
+\newcommand{\supervisorSignature}{\signature{Supervisor}}
+
+\newcommand{\theAcknowledgementStamp}[1]{%
+\vspace{3em}
+\begin{flushright}
+\theauthor{}\\
+#1\\
+\thesigningdate{}
+\end{flushright}
+\vfill}
 % ------------------------------------------------------ [ Page Layout Styling ]
+
+\newcommand{\tocChpAdd}[2]{#1\addcontentsline{toc}{chapter}{#2}}
+\newcommand{\tocPage}[1]{#1\cleardoublepage}
+
+
 % ------------------------------------------------------------ [ Draft Styling ]
 \ifdraft{
 %% Line Numbering
@@ -272,6 +322,11 @@
   \fi
 % ------------------------------------------------------- [ Styling for Screen ]
   \ifscreen
+
+    \setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
+    \setlength{\parindent}{0pt}
+
+
     \settrimmedsize{\stockheight}{\stockwidth}{*}
     \settrims{0pt}{0pt}
 
@@ -324,6 +379,11 @@
 before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 }
 
+\newlist{inparaenumor}{enumerate*}{1}
+\setlist[inparaenumor,1]{label=(\alph*),before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; or }}}
+
+
+
 \newlist{inparadesc}{description*}{1}
 \setlist[inparadesc,1]{%
   font=\bfseries,%
@@ -348,6 +408,15 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 \setlist[compactenum,2]{label=\alph*)}
 \setlist[compactenum,3]{label=\roman*)}
 
+% ----------------------------------------------------------- [ Precis Styling ]
+\NewEnviron{precise}{%
+  \begin{quote}\em
+    \BODY{}
+  \end{quote}
+}
+% ------------------------------------------------------------------- [ Quotes ]
+\newcommand{\squote}[1]{\xspace`#1'\xspace}
+\newcommand{\dquote}[1]{\xspace``#1''\xspace}
 %% ------------------------------------------------------------ [ contractions ]
 
 \DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
@@ -374,6 +443,9 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 \renewcommand{\abstractnamefont}{\sffamily\LARGE\bfseries}
 \renewcommand{\abstracttextfont}{\normalfont\normalsize}
 \addto\captionsbritish{\renewcommand*\abstractname{Abstract}}
+
+\setlength{\absleftindent}{0pt}
+\setlength{\absrightindent}{0pt}
 
 %% ---------------------------------------------- [ Chapter and Heading Styles ]
 % Draft
@@ -407,14 +479,44 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 
 %% ----------------------------------------------------------- [ Theorems ]
 \declaretheoremstyle[%
-  spaceabove=6pt, spacebelow=6pt,
-  headfont=\normalfont\bfseries,
+  spaceabove=1em,
+  spacebelow=1em,
+  headfont=\sffamily\bfseries,
   bodyfont=\normalfont\em,
-  postheadspace=1em
+  postheadspace=0.75em
 ]{thmstyle}
 
-\declaretheorem[style=thmstyle, starred, name={\textbf{Note}}]{note}
-\declaretheorem[style=thmstyle, starred, name={\textbf{Remark}}]{remark}
+\declaretheoremstyle[%
+  spaceabove=1em,
+  spacebelow=1em,
+  headfont=\sffamily\bfseries,
+  bodyfont=\normalfont,
+  postheadspace=0.75em
+]{notestyle}
+
+\declaretheoremstyle[%
+  spaceabove=1.5em,
+  spacebelow=1.5em,
+  headfont=\sffamily\bfseries,
+  bodyfont=\normalfont\em,
+  postheadspace=0.75em
+]{hypostyle}
+
+\declaretheorem[%
+    style=hypostyle,
+    name={Hypothesis}
+  ]{hypothesis}
+
+\declaretheorem[%
+    style=hypostyle,
+    parent=hypothesis,
+    name={Sub-Hypothesis}
+  ]{subhyp}
+
+\declaretheorem[style=notestyle, starred, name={\textbf{Note}}]{note}
+\declaretheorem[style=notestyle, starred, name={\textbf{Remark}}]{remark}
+\declaretheorem[style=notestyle, starred, name={\textbf{Aside}}]{aside}
+
 \declaretheorem[style=thmstyle, name={Definition}]{definition}
 \declaretheorem[style=thmstyle, name={Example}]{example}
 \declaretheorem[style=thmstyle, name={Exercise}]{exercise}
@@ -429,9 +531,17 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 
 % --------------------------------------------- [ Glossary Stylings ]
 %% TODO
+
+% -------------------------------------------------------------- [ Misc Macros ]
+
+\newcommand{\furl}[1]{\footnote{\url{#1}}}
+
 % ---------------------------------------------- [ TODO Note Macros ]
 
 \newcommand{\addref}{\todo{Add Reference}}
+
+\newcommand{\maybe}[1]{\todo{Should I: #1??}}
+\newcommand{\maybecite}{\todo{Should Cite??}}
 
 % nasty hack to get spacing to work
 \newcommand{\fixtodo}[2][]{%
@@ -450,6 +560,8 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 }}
 
 % ----------------------------------------------- [ Predefined Pages ]
+
+
 %% Dedication Page
 \NewEnviron{dedication}{%
  \thispagestyle{empty}
@@ -457,24 +569,78 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
  \begin{flushright}%
  \BODY{}
  \end{flushright}%
- \cleardoublepage
+ \cleardoublepage{}
 }
+
+%% Declaration Page
+\NewEnviron{declaration}{%
+\thispagestyle{empty}
+\BODY{}
+\cleardoublepage{}}
+%
+%% Copyright page
+\NewEnviron{permission}{%
+\thispagestyle{empty}
+\BODY{}
+\cleardoublepage{}}
+
+\newcommand{\makeDeclaration}{%
+\begin{declaration}
+\section*{Candidate's Declaration}
+
+I, \theauthor{}, hereby certify that this thesis, which is approximately \thewordcount{} words in length, has been written by me, and that it is the record of work carried out by me, or principally by myself in collaboration with others as acknowledged, and that it has not been submitted in any previous application for a higher degree.\\
+
+\noindent
+I was admitted as a research student in \thestartdate{}, and as a candidate for the degree of \thedegree{} in \thefinishdate{}; the higher study, for which this is a record, was carried out in the \theuniversity{} between \thestartyear{} and \thefinishyear{}.
+\\
+
+\mySignature{}
+
+\section*{Supervisor's Declaration}
+
+I hereby certify that the candidate has fulfilled the conditions of the Resolution and Regulations appropriate for the degree of \thedegree{} in the \theuniversity{} and that the candidate is qualified to submit this thesis in application for that degree.
+
+\supervisorSignature{}
+\end{declaration}}
+
 
 %% Acknowledgement Page
 \NewEnviron{acknowledgements}{%
   \chapter*{Acknowledgements}
   %\addcontentsline{toc}{chapter}{Acknowledgements}
   \BODY{}
-  \cleardoublepage
+  \cleardoublepage{}
 }
 
-%% Declaration Page
-\NewEnviron{declaration}{%
-\thispagestyle{plain}
-\BODY{}
-\cleardoublepage
-}
+\newcommand{\makePermission}{%
+\begin{permission}
+\section*{Permission for Publication}
 
+In submitting this thesis to the University of St Andrews I understand that I am giving permission for it to be made available for use in accordance with the regulations of the University Library for the time being in force, subject to any copyright vested in the work not being affected thereby.
+I also understand that the title and the abstract will be published, and that a copy of the work may be made and supplied to any bona fide library or research worker, that my thesis will be electronically accessible for personal or research use unless exempt by award of an embargo as requested below, and that the library has the right to migrate my thesis into new electronic forms as required to ensure continued access to the thesis.
+I have obtained any third-party copyright permissions that may be required in order to allow such access and migration, or have requested the appropriate embargo below.
+\\
+
+\noindent
+The following is an agreed request by candidate and supervisor regarding the publication of this thesis:
+
+\begin{center}
+No embargo on any electronic nor print copy.
+\end{center}
+
+\mySignature{}
+\supervisorSignature{}
+
+\end{permission}}
+
+
+%% Abstract
+\NewEnviron{theabstract}{%
+\thispagestyle{empty}
+  \begin{abstract}
+    \BODY{}
+  \end{abstract}
+\cleardoublepage{}}
 %% -------------------------------------------------------------- [ Title Page ]
 \renewcommand{\maketitle}{%
  \hypersetup{%
@@ -482,6 +648,18 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
   pdftitle={\@title},
   pdfkeywords={\@keywordlist}
  }
+ \ifcoverpage{}
+   \thispagestyle{empty}
+   \begin{flushright}
+   \vspace*{0.2\textheight}
+   {\LARGE \@title}
+   \rule{0.9\linewidth}{0.5em}\\[2em]
+   {\Large \@author}\\[0.2em]
+   {\Large \thefinishmonth~\thefinishyear}
+   \vfill
+ \end{flushright}
+ \cleardoublepage
+ \fi
  \begin{titlingpage}
  \centering
  \vspace*{0.025\textheight}
