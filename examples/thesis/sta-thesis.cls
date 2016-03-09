@@ -1,5 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Copyright 2015 - Jan de Muijnck-Hughes
+% ----------------------------------------------------------- [ sta-thesis.cls ]
+% Module    : sta-thesis.cls
+% Copyright : (c) Jan de Muijnck-Hughes
+% License   : see LICENSE
+% Version   : v2016.03.09
+% ---------------------------------------------------------------------- [ EOH ]
 %%
 %% This work may be distributed and/or modified under the  conditions
 %% of the LaTeX Project Public License, either version 1.3c of this
@@ -17,7 +21,7 @@
 %% This work consists of the file: sta-thesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-thesis}[2015/04/07 v2015.04.07 sta-thesis]
+\ProvidesClass{sta-thesis}[2016/03/09 v2016.03.09 sta-thesis]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for producing theses. This style builds upon existing
 %% LaTeX packages combining them into a consistent class that is

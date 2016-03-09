@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Copyright 2012 - Jan de Muijnck-Hughes
+%% Copyright 2012, 2016 - Jan de Muijnck-Hughes
 %%
 %% This work may be distributed and/or modified under the  conditions
 %% of the LaTeX Project Public License, either version 1.3c of this
@@ -17,13 +17,13 @@
 %% This work consists of the file: sta-thesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-article}[2012/10/11 v2012.10.11 sta-article]
+\ProvidesClass{sta-article}[2016/03/09 v2016.03.09 sta-article]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for writing letters, adhereing to the University of St
 %% Andrews corporate guidelines.
 \LoadClass[pdftex, 10pt, article, oneside, final]{memoir}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\ProcessOptions
+\ProcessOptions{}
 % ------------------------------------ [ Fix LaTex Packages ]
 \RequirePackage[l2tabu,orthodox]{nag}
 \RequirePackage{fixltx2e}

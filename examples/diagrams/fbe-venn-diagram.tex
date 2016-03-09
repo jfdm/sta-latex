@@ -1,0 +1,134 @@
+ \documentclass[, landscape]{article}
+\input{./preamble.ltx}
+\begin{document}
+\centering
+\begin{tikzpicture}[scale=1, every node/.style=on grid]
+\begin{pgfonlayer}{foreground layer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% IBE
+\node [draw, fill=blue!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt]
+      (pubibe)
+      {Sha84, BF03, COC01};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (pubibe.north west)
+      {Public};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% AnonIBE
+\node [draw, fill=purple!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, below = 8mm of pubibe.south]
+      (anonibe)
+      {BCOP04, ABC08, BW06, GEN06, CHKP10, ABB10};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (anonibe.north west)
+      {Anon};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Public FBE Schemes
+\node [draw, fill=blue!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, left = 8mm of pubibe.west]
+      (pfbe)
+      {NVT};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (pfbe.north west)
+      {Public};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Private FBE Schemes
+\node [draw, fill=purple!20, rounded corners, text width=15mm, text
+centered,
+      inner sep=10pt, inner ysep=15pt, below = 8mm of pfbe.south]
+      (afbe)
+      {NVT};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (afbe.north west)
+      {Private};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% KP-ABE
+\node [draw, fill=blue!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, right = 10mm of pubibe.east ]
+      (kpabe)
+      {GOY06, SW05};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (kpabe.north west)
+      {KP};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CP-ABE
+\node [draw, fill=blue!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, right = 5mm of kpabe.east ]
+      (cpabe)
+      {BSW07, WAT11, GJPS08};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (cpabe.north west)
+      {CP};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HVE
+\node [draw, fill=purple!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, right = 8mm of anonibe.east ]
+      (hve)
+      {BW07, SBC07};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (hve.north west)
+      {HVE};
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% IVE
+\node [draw, fill=purple!20, rounded corners, text width=15mm, text centered,
+      inner sep=10pt, inner ysep=15pt, right = 8mm of hve.east ]
+      (ipe)
+      {KSW08, OT09, COS10};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (ipe.north west)
+      {IPE};
+\end{pgfonlayer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Draw Groupings
+%% IBE
+\node [draw, fill=orange!10, rounded corners, inner sep=10pt, inner ysep=15pt,
+      fit=(pubibe) (anonibe)]
+      (ibe) {};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (ibe.north west)
+      {IBE};
+%% ABE
+\node [draw, fill=orange!10,rounded corners, inner sep=10pt, inner ysep=15pt,
+      fit=(kpabe) (cpabe)]
+      (abe) {};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (abe.north west)
+      {ABE};
+%% PBE
+\node [draw, fill=orange!10, rounded corners, inner sep=10pt, inner ysep=15pt,
+      fit=(ipe) (hve)]
+      (pbe) {};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (pbe.north west)
+      {PBE};
+%% PBE
+\node [draw, fill=orange!10, rounded corners, inner sep=10pt, inner ysep=15pt,
+      fit=(afbe) (pfbe)]
+      (gen) {};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (gen.north west)
+      {Generic};
+\begin{pgfonlayer}{background layer}
+\node [draw, fill=green!20, rounded corners,
+      inner sep=10pt, inner ysep=15pt,
+      fit=(ibe) (abe) (pbe) (afbe) (pfbe)]
+      (fbe) {};
+\node [fill, text=white, font=\sffamily\bfseries, rounded corners,
+      right]
+      at (fbe.north west)
+      {FBE};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{document}

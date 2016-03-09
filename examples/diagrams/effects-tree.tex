@@ -1,0 +1,31 @@
+\documentclass[landscape]{standalone}
+
+\input{./preamble.ltx}
+
+\begin{document}
+\centering
+\begin{tikzpicture}[%
+  scale=1,
+  shape aspect=1,
+  every node/.style={BasicCircle, minimum height = 10mm, minimum width = 10mm},
+  level/.style={sibling distance = 35mm/#1, level distance = 20mm}
+]
+
+\node (beforeF) {Fred}
+  child { node (beforeJ) {Jim}}
+  child { node (beforeS) {Sheila}
+    child { node (beforeA) {Alice}}
+    child { node (beforeB) {Bob}
+}};
+
+
+\node (afterF) [right = 60mm of beforeF] {2, Fred}
+  child { node (afterJ) {1, Jim}}
+  child { node (afterS) {4, Sheila}
+    child { node (afterA) {3, Alice}}
+    child { node (afterB) {5, Bob}
+}};
+
+\draw [-latex, ultra thick, shorten >= 10pt, shorten <= 10pt] (beforeS) to (afterJ);
+\end{tikzpicture}
+\end{document}

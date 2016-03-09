@@ -1,5 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Copyright 2012 - Jan de Muijnck-Hughes
+% ----------------------------------------------------------- [ sta-letter.cls ]
+% Module    : sta-letter.cls
+% Copyright : (c) Jan de Muijnck-Hughes
+% License   : see LICENSE
+% Version   : v2016.03.09
+% ---------------------------------------------------------------------- [ EOH ]
 %%
 %% This work may be distributed and/or modified under the  conditions
 %% of the LaTeX Project Public License, either version 1.3c of this
@@ -14,10 +18,10 @@
 %%
 %% The Current Maintainer of this work is Jan de Muijnck-Hughes
 %%
-%% This work consists of the file: sta-thesis.cls
+%% This work consists of the file: sta-letter.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-letter}[2012/10/11 v2012.10.11 sta-letter]
+\ProvidesClass{sta-letter}[2016/03/09 v2016.03.09 sta-letter]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for writing letters, adhereing to the University of St
 %% Andrews corporate guidelines.
