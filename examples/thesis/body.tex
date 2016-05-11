@@ -5,12 +5,14 @@
 
 \ExecuteBibliographyOptions{maxnames=3,minnames=2}
 
+% You can customise based on memoir here.
+
 %% ---------------------------------------------------------------- [ Metadata ]
 \title{Ninja Thesis}
 \author{Hamato Yoshi}
 \email{hamato@yoshi.com}
 
-\date{\today}
+\date{\origdate\today}
 
 \address{%
 First Line\\
@@ -20,7 +22,9 @@ Third Line\\
 }
 
 \university{University Name}
-\logocmd{\includegraphics[scale=1.2]{./sta-logo.pdf}}
+
+% For copyright reasons I do not include the university logo.
+\logocmd{\includegraphics[height=0.3\textwidth]{logo.png}}
 
 \wordcount{80000}
 \degree{Doctor of Philosophy}
@@ -36,30 +40,47 @@ Third Line\\
 %% ------------------------------------------------------------- [ Frontmatter ]
 \frontmatter
 %%
-\thispagestyle{empty}
-\begin{abstract}
+\begin{theabstract}
+An abstract of words.
+\end{theabstract}
 
-\end{abstract}
-\cleardoublepage
-
-
-\makeDeclaration{}
-\makePermission{}
+\makedeclaration{} % if custom declaration use declaration environment.
+\makecopyrightnoembargo{} % Other copyright statements to be supported in future.
 
 
 \begin{acknowledgements}
 I acknowledge people.
+
+\theAcknowledgementStamp{St Andrews}
 \end{acknowledgements}
+
+\cleardoublepage{}
+
+\begin{dedication}
+Something snazzy like:
+\vspace{3em}
+
+voor het schuim op het bier,\\
+voor de nachten plezier\\
+voor alle liedjes die ooit zijn bedacht\\
+voor het haar op mijn hoofd,\\
+voor het vuur dat nooit dooft\\
+voor die foto waarop jij naar mij lacht\\
+\textit{Halleluja}~\textsc{Jeroen Kant}
+\vfill
+\end{dedication}
+
 %% --------------------------------------------------------------------- [ TOC ]
 \tableofcontents
 
 %% -------------------------------------------------------------- [ Mainmatter ]
-\mainmatter
+\mainmatter{}
 
+% If you are to use latex please use includes.
 \chapter{Introduction}
 \nocite{*}
 \citeauthor{Shannon1946} wrote a cool paper \citep{Shannon1946}. The security of public key protocols has been studied before \citep{Dolev1983}. \citeauthor{Shamir1979} introduces in \citet{Shamir1979} how to share secrets.
-There are many interesting papers outthere \cite{Needham1978,Rivest1978,Merkle1978,Diffie1976,Shannon1949,Ziv1977, Huffman1952, Hamming1950}
+There are many interesting papers outthere \citet{Needham1978,Rivest1978,Merkle1978,Diffie1976,Shannon1949,Ziv1977, Huffman1952, Hamming1950}
 
 \begin{fncycomment}
 This should only be seen in draft mode.
@@ -76,10 +97,13 @@ And hold their manhoods cheap whiles any speaks
 That fought with us upon Saint Crispin's day.
 \end{quote}
 
-\lipsum
+\lipsum{}
+
 \chapter{Method}
 
-\lipsum
+Please consider use of the \texttt{csquotes} package, it is loaded by default and helps you with \enquote{quotes}.
+
+\lipsum{}
 
 \begin{theorem}\label{th:a}
 Let $a$ and $b$ be in $\mathbb{N}$. Then there exist integers $u$ and $v$, such that
@@ -168,7 +192,7 @@ A definition
 
 \chapter{Results}
 
-\lipsum
+\lipsum{}
 \chapter{Discussion}
 
 \begin{quote}
@@ -186,14 +210,14 @@ That fought with us upon Saint Crispin's day.
 
 \chapter{Conclusion}
 
-\lipsum
+\lipsum{}
 
 %% ------------------------------------------------------------- [ Back Matter ]
 \backmatter
 %% ------------------------------------------------------------ [ Bibliography ]
-\printbibliography
+\printbibliography{} % <- biblatex has cool features, I suggest you use them.
 %% ----------------------------------------------------------- [ List o' Stuff ]
-\cleardoublepage
+\cleardoublepage{}
 \listoftheorems[ignore={note,remark}]
 
 \end{document}

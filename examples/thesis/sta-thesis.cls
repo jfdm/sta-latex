@@ -1,9 +1,5 @@
-% ----------------------------------------------------------- [ sta-thesis.cls ]
-% Module    : sta-thesis.cls
-% Copyright : (c) Jan de Muijnck-Hughes
-% License   : see LICENSE
-% Version   : v2016.03.09
-% ---------------------------------------------------------------------- [ EOH ]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Copyright 2015,2016 - Jan de Muijnck-Hughes
 %%
 %% This work may be distributed and/or modified under the  conditions
 %% of the LaTeX Project Public License, either version 1.3c of this
@@ -21,7 +17,7 @@
 %% This work consists of the file: sta-thesis.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{sta-thesis}[2016/03/09 v2016.03.09 sta-thesis]
+\ProvidesClass{sta-thesis}[2016/05/11 v2016.05.11 sta-thesis]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% LaTeX class for producing theses. This style builds upon existing
 %% LaTeX packages combining them into a consistent class that is
@@ -31,6 +27,7 @@
 %%   todonotes
 %%   amsmath
 %%   thmtools
+%%   csquotes
 %%
 %% For the full list just scroll down a little further.
 %%
@@ -199,6 +196,7 @@
 \RequirePackage{memhfixc}
 \RequirePackage{bookmark}
 \RequirePackage{tikz}
+\RequirePackage[unq]{unique}
 %% For Draft Mode
 \RequirePackage[obeyDraft,
                 colorinlistoftodos,
@@ -229,6 +227,7 @@
 \newcommand{\keywordlist}[1]{\gdef\@keywordlist{#1}}
 \newcommand{\startdate}[2]{\gdef\@startmonth{#1}\gdef\@startyear{#2}}
 \newcommand{\finishdate}[2]{\gdef\@finishmonth{#1}\gdef\@finishyear{#2}}
+\newcommand{\copyrightyear}[1]{\gdef\@copyyear{#1}}
 
 \newcommand{\thestartdate}{\@startmonth~\@startyear}
 \newcommand{\thestartmonth}{\@startmonth}
@@ -237,6 +236,8 @@
 \newcommand{\thefinishdate}{\@finishmonth~\@finishyear}
 \newcommand{\thefinishmonth}{\@finishmonth}
 \newcommand{\thefinishyear}{\@finishyear}
+
+\newcommand{\thecopyrightyear}{\@copyyear}
 
 \newcommand{\thesigningdate}{{\origdate\thedate}}
 
@@ -355,6 +356,9 @@ Signature of~#1:\xspace\dotfill\\
 \settocdepth{section}
 \renewcommand{\cftpartnumwidth}{2em}
 
+\newcommand{\theadStyle}{\bfseries\sffamily}
+\newcommand{\thead}[1]{{\theadStyle #1}}
+
 %% Printing Dependent styling
 \ifprinting
  \selectcolormodel{cmyk}
@@ -412,15 +416,6 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 \setlist[compactenum,2]{label=\alph*)}
 \setlist[compactenum,3]{label=\roman*)}
 
-% ----------------------------------------------------------- [ Precis Styling ]
-\NewEnviron{precise}{%
-  \begin{quote}\em
-    \BODY{}
-  \end{quote}
-}
-% ------------------------------------------------------------------- [ Quotes ]
-\newcommand{\squote}[1]{\xspace`#1'\xspace}
-\newcommand{\dquote}[1]{\xspace``#1''\xspace}
 %% ------------------------------------------------------------ [ contractions ]
 
 \DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
@@ -479,7 +474,7 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 
 % Headings
 \headstyles{komalike}
-\chapterstyle{madsen}
+\chapterstyle{default}
 
 %% ----------------------------------------------------------- [ Theorems ]
 \declaretheoremstyle[%
@@ -507,13 +502,13 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 ]{hypostyle}
 
 \declaretheorem[%
-    style=hypostyle,
-    name={Hypothesis}
+      numbered=unless unique
+    , style=hypostyle
+    , name={Hypothesis}
   ]{hypothesis}
 
 \declaretheorem[%
     style=hypostyle,
-    parent=hypothesis,
     name={Sub-Hypothesis}
   ]{subhyp}
 
@@ -576,6 +571,14 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
  \cleardoublepage{}
 }
 
+%% Acknowledgement Page
+\NewEnviron{acknowledgements}{%
+  \chapter*{Acknowledgements}
+  %\addcontentsline{toc}{chapter}{Acknowledgements}
+  \BODY{}
+  \cleardoublepage{}
+}
+
 %% Declaration Page
 \NewEnviron{declaration}{%
 \thispagestyle{empty}
@@ -588,56 +591,6 @@ before=\unskip{: }, itemjoin={{; }}, itemjoin*={{; and }}
 \BODY{}
 \cleardoublepage{}}
 
-\newcommand{\makeDeclaration}{%
-\begin{declaration}
-\section*{Candidate's Declaration}
-
-I, \theauthor{}, hereby certify that this thesis, which is approximately \thewordcount{} words in length, has been written by me, and that it is the record of work carried out by me, or principally by myself in collaboration with others as acknowledged, and that it has not been submitted in any previous application for a higher degree.\\
-
-\noindent
-I was admitted as a research student in \thestartdate{}, and as a candidate for the degree of \thedegree{} in \thefinishdate{}; the higher study, for which this is a record, was carried out in the \theuniversity{} between \thestartyear{} and \thefinishyear{}.
-\\
-
-\mySignature{}
-
-\section*{Supervisor's Declaration}
-
-I hereby certify that the candidate has fulfilled the conditions of the Resolution and Regulations appropriate for the degree of \thedegree{} in the \theuniversity{} and that the candidate is qualified to submit this thesis in application for that degree.
-
-\supervisorSignature{}
-\end{declaration}}
-
-
-%% Acknowledgement Page
-\NewEnviron{acknowledgements}{%
-  \chapter*{Acknowledgements}
-  %\addcontentsline{toc}{chapter}{Acknowledgements}
-  \BODY{}
-  \cleardoublepage{}
-}
-
-\newcommand{\makePermission}{%
-\begin{permission}
-\section*{Permission for Publication}
-
-In submitting this thesis to the University of St Andrews I understand that I am giving permission for it to be made available for use in accordance with the regulations of the University Library for the time being in force, subject to any copyright vested in the work not being affected thereby.
-I also understand that the title and the abstract will be published, and that a copy of the work may be made and supplied to any bona fide library or research worker, that my thesis will be electronically accessible for personal or research use unless exempt by award of an embargo as requested below, and that the library has the right to migrate my thesis into new electronic forms as required to ensure continued access to the thesis.
-I have obtained any third-party copyright permissions that may be required in order to allow such access and migration, or have requested the appropriate embargo below.
-\\
-
-\noindent
-The following is an agreed request by candidate and supervisor regarding the publication of this thesis:
-
-\begin{center}
-No embargo on any electronic nor print copy.
-\end{center}
-
-\mySignature{}
-\supervisorSignature{}
-
-\end{permission}}
-
-
 %% Abstract
 \NewEnviron{theabstract}{%
 \thispagestyle{empty}
@@ -645,6 +598,7 @@ No embargo on any electronic nor print copy.
     \BODY{}
   \end{abstract}
 \cleardoublepage{}}
+
 %% -------------------------------------------------------------- [ Title Page ]
 \renewcommand{\maketitle}{%
  \hypersetup{%
@@ -686,11 +640,56 @@ No embargo on any electronic nor print copy.
  {\Large submitted on}\\[2em]
  {\Huge\@date}
  \vfill
- {\large Copyright\xspace\copyright\xspace\the\year\xspace by\xspace\@author}
- \vfill
  \end{titlingpage}
  \thispagestyle{plain}
 }
+
+
+% ------------------------------------------------------------ [ Default Pages ]
+
+\newcommand{\makedeclaration}{%
+\begin{declaration}
+\section*{Candidate's Declaration}
+
+I, \theauthor{}, hereby certify that this thesis, which is approximately \thewordcount{} words in length, has been written by me, and that it is the record of work carried out by me, or principally by myself in collaboration with others as acknowledged, and that it has not been submitted in any previous application for a higher degree.\\
+
+\noindent
+I was admitted as a research student in \thestartdate{}, and as a candidate for the degree of \thedegree{} in \thefinishdate{}; the higher study, for which this is a record, was carried out in the \theuniversity{} between \thestartyear{} and \thefinishyear{}.
+\\
+
+\mySignature{}
+
+\section*{Supervisor's Declaration}
+
+I hereby certify that the candidate has fulfilled the conditions of the Resolution and Regulations appropriate for the degree of \thedegree{} in the \theuniversity{} and that the candidate is qualified to submit this thesis in application for that degree.
+
+\supervisorSignature{}
+\end{declaration}}
+
+\newcommand{\makecopyrightnoembargo}{%
+\begin{permission}
+\section*{Permission for Publication}
+
+In submitting this thesis to the University of St Andrews I understand that I am giving permission for it to be made available for use in accordance with the regulations of the University Library for the time being in force, subject to any copyright vested in the work not being affected thereby.
+I also understand that the title and the abstract will be published, and that a copy of the work may be made and supplied to any bona fide library or research worker, that my thesis will be electronically accessible for personal or research use unless exempt by award of an embargo as requested below, and that the library has the right to migrate my thesis into new electronic forms as required to ensure continued access to the thesis.
+I have obtained any third-party copyright permissions that may be required in order to allow such access and migration, or have requested the appropriate embargo below.
+\\
+
+\noindent
+The following is an agreed request by candidate and supervisor regarding the publication of this thesis:
+
+\begin{center}
+No embargo on any electronic nor print copy.
+\end{center}
+
+\mySignature{}
+\supervisorSignature{}
+
+\end{permission}}
+
+
+% ------------------------------------------------------------- [ Hidden Stuff ]
+%% Daleif1 Chapter style taken from memoir.
 
 \newlength\dlf@normtxtw
 \setlength\dlf@normtxtw{\textwidth}
@@ -721,5 +720,6 @@ No embargo on any electronic nor print copy.
   \renewcommand\afterchapternum{\par\vskip\midchapskip}
   \renewcommand\printchaptertitle[1]{\chaptitlefont\raggedleft ##1\par}
 }
+
 \endinput
 % ------------------------------------------------------------ [ EOF ]

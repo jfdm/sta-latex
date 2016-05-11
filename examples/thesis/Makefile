@@ -62,6 +62,11 @@ version:
 	mv ${THESIS}.screen.pdf ${THESIS_DATE}.screen.pdf
 	mv ${THESIS}.electronic.pdf ${THESIS_DATE}.electronic.pdf
 
+proof: biblio figure ${TEX_SOURCES}
+	${LATEXMK} ${LATEXMK_OPTS} ${THESIS}.draft.tex
+
+draft: proof
+	mv ${THESIS}.draft.pdf ${THESIS_DATE}.draft.pdf
 # ----------------------------------------------------------------- [ Cleaning ]
 
 clean:
@@ -77,6 +82,6 @@ cthulhu:
 
 .PHONY: cthulhu clean version draft print wordcount \
 		wordcount-verbose wordcount-total chktex lacheck \
-		style-check screen electronic
+		style-check screen electronic proof
 
 # ---------------------------------------------------------------------- [ EOF ]
